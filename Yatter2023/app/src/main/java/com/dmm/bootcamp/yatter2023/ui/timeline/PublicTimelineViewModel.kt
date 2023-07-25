@@ -12,9 +12,9 @@ import kotlinx.coroutines.launch
 class PublicTimelineViewModel(
     private val statusRepository: StatusRepository,
 ): ViewModel() {
-    private val _uiState: MutableStateFlow<PublicTimeLineUiState> =
-        MutableStateFlow(PublicTimeLineUiState.empty())
-    val uiState: StateFlow<PublicTimeLineUiState> = _uiState
+    private val _uiState: MutableStateFlow<PublicTimelineUiState> =
+        MutableStateFlow(PublicTimelineUiState.empty())
+    val uiState: StateFlow<PublicTimelineUiState> = _uiState
 
     private suspend fun fetchPublicTimeline() {
         val statusList = statusRepository.findAllPublic()
