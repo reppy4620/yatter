@@ -83,6 +83,9 @@ fun RegisterAccountTemplate(
                         .padding(bottom = 16.dp),
                     value = username,
                     onValueChange = onChangedUsername,
+                    placeholder = {
+                        Text(text = stringResource(id = R.string.register_username_placeholder))
+                    },
                 )
                 Text(
                     modifier = Modifier
@@ -98,7 +101,7 @@ fun RegisterAccountTemplate(
                     value = password,
                     onValueChange = onChangedPassword,
                     placeholder = {
-                        Text(text = stringResource(id = R.string.login_password_placeholder))
+                        Text(text = stringResource(id = R.string.register_password_placeholder))
                     },
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),

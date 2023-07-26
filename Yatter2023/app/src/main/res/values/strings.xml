@@ -29,6 +29,8 @@
     <string name="register_topbar">Register</string>
     <string name="register_topbar_icon_desc">Back to Login</string>
     <string name="register_username_label">Username</string>
+    <string name="register_username_placeholder">username</string>
     <string name="register_password_label">Password</string>
+    <string name="register_password_placeholder">password</string>
     <string name="register_register_button">Register</string>
 </resources>

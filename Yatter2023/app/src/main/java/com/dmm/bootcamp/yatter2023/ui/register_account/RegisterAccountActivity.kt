@@ -1,25 +1,24 @@
-package com.dmm.bootcamp.yatter2023.ui.login
+package com.dmm.bootcamp.yatter2023.ui.register_account
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.Surface
-import com.dmm.bootcamp.yatter2023.ui.register_account.RegisterAccountActivity
+import com.dmm.bootcamp.yatter2023.ui.login.LoginActivity
 import com.dmm.bootcamp.yatter2023.ui.theme.Yatter2023Theme
-import com.dmm.bootcamp.yatter2023.ui.timeline.PublicTimelineActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class LoginActivity: ComponentActivity() {
+class RegisterAccountActivity: AppCompatActivity() {
     companion object {
         fun newIntent(context: Context): Intent = Intent(
             context,
-            LoginActivity::class.java
+            RegisterAccountActivity::class.java
         )
     }
 
-    private val viewModel: LoginViewModel by viewModel()
+    private val viewModel: RegisterAccountViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,18 +26,17 @@ class LoginActivity: ComponentActivity() {
         setContent {
             Yatter2023Theme {
                 Surface {
-                    LoginPage(viewModel = viewModel)
+                    RegisterAccountPage(viewModel = viewModel)
                 }
             }
         }
 
-        viewModel.navigateToPublicTimeline.observe(this) {
-            startActivity(PublicTimelineActivity.newIntent(this))
+        viewModel.navigateToLogin.observe(this) {
+            startActivity(LoginActivity.newIntent(this))
             finish()
         }
-
-        viewModel.navigateToRegister.observe(this) {
-            startActivity(RegisterAccountActivity.newIntent(this))
+        viewModel.goBack.observe(this) {
+            finish()
         }
     }
 }
