@@ -10,4 +10,6 @@
     <string name="login_login_button">Login</string>
     <string name="login_register_guide">If you\'ve not registered</string>
     <string name="login_register_text_button">Register</string>
+    <string name="login_password_hide">Hide Password</string>
+    <string name="login_password_show">Show Password</string>
 </resources>

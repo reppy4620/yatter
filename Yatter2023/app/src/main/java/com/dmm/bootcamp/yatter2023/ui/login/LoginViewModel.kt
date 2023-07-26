@@ -44,7 +44,7 @@ class LoginViewModel(
         val snapshotBindingModel = uiState.value.loginBindingModel
         _uiState.update {
             it.copy(
-                validUsername = Password(password).validate(),
+                validPassword = Password(password).validate(),
                 loginBindingModel = snapshotBindingModel.copy(
                     password = password
                 )
@@ -70,7 +70,7 @@ class LoginViewModel(
 
                 }
             }
-            _uiState.update { it.copy(isLoading = true) }
+            _uiState.update { it.copy(isLoading = false) }
         }
     }
 
