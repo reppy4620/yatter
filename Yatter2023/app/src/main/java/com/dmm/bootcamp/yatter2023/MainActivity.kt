@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
+import com.dmm.bootcamp.yatter2023.ui.login.LoginActivity
 import com.dmm.bootcamp.yatter2023.ui.theme.Yatter2023Theme
 import com.dmm.bootcamp.yatter2023.ui.timeline.PublicTimelineActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
+  private val viewModel: MainViewModel by viewModel()
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContent {
@@ -25,12 +28,15 @@ class MainActivity : AppCompatActivity() {
       }
     }
 
-//    val content: View = findViewById(android.R.id.content)
-//    content.viewTreeObserver.addOnPreDrawListener { // Check if the initial data is ready.
-//      false
-//    }
+    viewModel.onCreate()
 
-    startActivity(PublicTimelineActivity.newIntent(this))
-    finish()
+    viewModel.navigateToPublicTimeline.observe(this) {
+      startActivity(PublicTimelineActivity.newIntent(this))
+      finish()
+    }
+    viewModel.navigateToLogin.observe(this) {
+      startActivity(LoginActivity.newIntent(this))
+      finish()
+    }
   }
 }
