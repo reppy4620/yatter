@@ -20,8 +20,15 @@
 
     <!-- Post Page -->
     <string name="post_topbar">Post</string>
-    <string name="post_topbar_icon_desc">Back to previous page</string>
+    <string name="post_topbar_icon_desc">Back to PublicTimeline</string>
     <string name="post_placeholder">What\'s happening?</string>
     <string name="post_button">Tweet</string>
     <string name="post_avatar_desc">Avatar image</string>
+
+    <!-- Register Page -->
+    <string name="register_topbar">Register</string>
+    <string name="register_topbar_icon_desc">Back to Login</string>
+    <string name="register_username_label">Username</string>
+    <string name="register_password_label">Password</string>
+    <string name="register_register_button">Register</string>
 </resources>
