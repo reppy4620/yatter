@@ -8,10 +8,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -31,12 +35,21 @@ fun PublicTimelineTemplate(
     statusList: List<StatusBindingModel>,
     isLoading: Boolean,
     isRefreshing: Boolean,
-    onRefresh: () -> Unit
+    onRefresh: () -> Unit,
+    onClickPost: () -> Unit
 ) {
     val pullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh)
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text(text = stringResource(id = R.string.timeline_topbar)) })
+            TopAppBar(title = { Text(text = stringResource(id = R.string.public_timeline_topbar)) })
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = onClickPost) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(id = R.string.public_timeline_post)
+                )
+            }
         }
     ) {
         Box(
@@ -68,7 +81,7 @@ fun PublicTimelineTemplate(
 
 @Preview
 @Composable
-fun PublicTimelineTemplatePreview() {
+private fun PublicTimelineTemplatePreview() {
     Yatter2023Theme {
         Surface {
             PublicTimelineTemplate(
@@ -92,7 +105,8 @@ fun PublicTimelineTemplatePreview() {
                 ),
                 isLoading = true,
                 isRefreshing = false,
-                onRefresh = {}
+                onRefresh = {},
+                onClickPost = {}
             )
         }
     }

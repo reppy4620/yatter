@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">Yatter2023</string>
+
+    <!-- Public Timeline Page -->
     <string name="public_timeline_avatar_content_description">アバター画像</string>
-    <string name="timeline_topbar">Timeline</string>
+    <string name="public_timeline_topbar">Timeline</string>
+    <string name="public_timeline_post">Post</string>
+
+    <!-- Login Page -->
     <string name="login_topbar">Login</string>
     <string name="login_username">Username</string>
     <string name="login_username_placeholder">username</string>
@@ -12,4 +17,11 @@
     <string name="login_register_text_button">Register</string>
     <string name="login_password_hide">Hide Password</string>
     <string name="login_password_show">Show Password</string>
+
+    <!-- Post Page -->
+    <string name="post_topbar">Post</string>
+    <string name="post_topbar_icon_desc">Back to previous page</string>
+    <string name="post_placeholder">What\'s happening?</string>
+    <string name="post_button">Tweet</string>
+    <string name="post_avatar_desc">Avatar image</string>
 </resources>

@@ -62,4 +62,8 @@ class PostViewModel(
             _uiState.update { it.copy(isLoading = false) }
         }
     }
+
+    fun onClickNavIcon() {
+        _goBack.value = Unit
+    }
 }

@@ -12,6 +12,7 @@ fun PublicTimelinePage(viewModel: PublicTimelineViewModel) {
         statusList = uiState.statusList,
         isLoading = uiState.isLoading,
         isRefreshing = uiState.isRefreshing,
-        onRefresh = viewModel::onRefresh
+        onRefresh = viewModel::onRefresh,
+        onClickPost = viewModel::onClickPost
     )
 }
