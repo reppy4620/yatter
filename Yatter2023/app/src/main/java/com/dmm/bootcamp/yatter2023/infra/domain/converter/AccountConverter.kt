@@ -18,9 +18,9 @@ object AccountConverter {
     username = Username(json.username),
     displayName = json.displayName,
     note = json.note,
-    avatar = URL(BuildConfig.API_URL + "/v1/" + json.avatar),
-    header = URL(BuildConfig.API_URL + "/v1/" + json.header),
-    followingCount = json.followingCount,
-    followerCount = json.followersCount,
+    avatar = json.avatar?.let { URL(it) },
+    header = json.header?.let { URL(it) },
+    followingCount = json.followingCount ?: 0,
+    followerCount = json.followersCount ?: 0,
   )
 }
