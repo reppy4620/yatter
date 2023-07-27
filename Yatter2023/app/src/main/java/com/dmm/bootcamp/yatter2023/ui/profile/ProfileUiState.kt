@@ -1,7 +1,10 @@
 package com.dmm.bootcamp.yatter2023.ui.profile
 
+import com.dmm.bootcamp.yatter2023.ui.timeline.bindingmodel.StatusBindingModel
+
 data class ProfileUiState(
     val bindingModel: ProfileBindingModel,
+    val statusList: List<StatusBindingModel>,
     val isLoading: Boolean,
 ) {
     companion object {
@@ -15,6 +18,7 @@ data class ProfileUiState(
                 followingCount = 0,
                 followerCount = 0
             ),
+            statusList = listOf(),
             isLoading = false
         )
     }

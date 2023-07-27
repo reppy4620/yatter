@@ -19,6 +19,7 @@ fun ProfilePage(
         header = uiState.bindingModel.header,
         followingCount = uiState.bindingModel.followingCount,
         followerCount = uiState.bindingModel.followerCount,
+        statusList = uiState.statusList,
         isLoading = uiState.isLoading,
         onClickEdit = viewModel::onClickEdit
     )

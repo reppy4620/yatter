@@ -1,11 +1,11 @@
 package com.dmm.bootcamp.yatter2023.ui.profile
 
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dmm.bootcamp.yatter2023.R
+import com.dmm.bootcamp.yatter2023.domain.repository.StatusRepository
 import com.dmm.bootcamp.yatter2023.domain.service.GetMeService
+import com.dmm.bootcamp.yatter2023.ui.timeline.bindingmodel.converter.StatusConverter
 import com.dmm.bootcamp.yatter2023.util.SingleLiveEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +13,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(
-    private val getMeService: GetMeService
+    private val getMeService: GetMeService,
+    private val statusRepository: StatusRepository,
 ): ViewModel() {
     private val _uiState: MutableStateFlow<ProfileUiState> = MutableStateFlow(ProfileUiState.empty())
     val uiState: StateFlow<ProfileUiState> = _uiState
@@ -35,6 +36,13 @@ class ProfileViewModel(
                         avatar = me.avatar.toString(),
                         header = me.header.toString()
                     )
+                )
+            }
+
+            val statusList = statusRepository.findAllHome()
+            _uiState.update {
+                it.copy(
+                    statusList = StatusConverter.convertToBindingModel(statusList)
                 )
             }
             _uiState.update { it.copy(isLoading = false) }

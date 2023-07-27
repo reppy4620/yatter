@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
@@ -43,6 +45,9 @@ import coil.compose.AsyncImage
 import com.dmm.bootcamp.yatter2023.R
 import com.dmm.bootcamp.yatter2023.ui.component.FullScreenLoadingIndicator
 import com.dmm.bootcamp.yatter2023.ui.theme.Yatter2023Theme
+import com.dmm.bootcamp.yatter2023.ui.timeline.StatusRow
+import com.dmm.bootcamp.yatter2023.ui.timeline.bindingmodel.MediaBindingModel
+import com.dmm.bootcamp.yatter2023.ui.timeline.bindingmodel.StatusBindingModel
 
 @Composable
 fun ProfileTemplate(
@@ -53,6 +58,7 @@ fun ProfileTemplate(
     header: String?,
     followingCount: Int,
     followerCount: Int,
+    statusList: List<StatusBindingModel>,
     isLoading: Boolean,
     onClickEdit: () -> Unit,
 ) {
@@ -126,6 +132,17 @@ fun ProfileTemplate(
                 }
             }
             Divider(thickness = 1.dp, modifier = Modifier.padding(top = 10.dp))
+            LazyColumn(
+
+            ) {
+                items(statusList) {
+                    StatusRow(
+                        statusBindingModel = it,
+                        onClick = {}
+                    )
+                    Divider()
+                }
+            }
         }
         if (isLoading) {
             FullScreenLoadingIndicator()
@@ -146,6 +163,64 @@ private fun ProfileTemplatePreview() {
                 header = "https://pbs.twimg.com/profile_banners/972404402425245697/1690337648/1500x500",
                 followingCount = 50,
                 followerCount = 100,
+                statusList = listOf(
+                    StatusBindingModel(
+                        id = "id",
+                        displayName = "display name",
+                        username = "username",
+                        avatar = "https://avatars.githubusercontent.com/u/39693306?v=4",
+                        content = "preview content",
+                        attachmentMediaList = listOf(
+                            MediaBindingModel(
+                                id = "id",
+                                type = "image",
+                                url = "https://avatars.githubusercontent.com/u/39693306?v=4",
+                                description = "icon"
+                            ),
+                            MediaBindingModel(
+                                id = "id",
+                                type = "image",
+                                url = "https://avatars.githubusercontent.com/u/39693306?v=4",
+                                description = "icon"
+                            ),
+                            MediaBindingModel(
+                                id = "id",
+                                type = "image",
+                                url = "https://pbs.twimg.com/profile_banners/972404402425245697/1690337648/1500x500",
+                                description = "icon"
+                            )
+                        )
+                    ),
+                    StatusBindingModel(
+                        id = "id",
+                        displayName = "display name",
+                        username = "username",
+                        avatar = "https://pbs.twimg.com/profile_banners/972404402425245697/1690337648/1500x500",
+                        content = "preview content",
+                        attachmentMediaList = listOf(
+                            MediaBindingModel(
+                                id = "id",
+                                type = "image",
+                                url = "https://avatars.githubusercontent.com/u/39693306?v=4",
+                                description = "icon"
+                            ),
+                            MediaBindingModel(
+                                id = "id",
+                                type = "image",
+                                url = "https://pbs.twimg.com/profile_banners/972404402425245697/1690337648/1500x500",
+                                description = "icon"
+                            )
+                        )
+                    ),
+                    StatusBindingModel(
+                        id = "id",
+                        displayName = "display name",
+                        username = "username",
+                        avatar = null,
+                        content = "preview content",
+                        attachmentMediaList = listOf()
+                    )
+                ),
                 isLoading = true,
                 onClickEdit = {}
             )
