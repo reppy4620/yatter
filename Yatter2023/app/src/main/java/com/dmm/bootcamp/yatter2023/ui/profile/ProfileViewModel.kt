@@ -49,6 +49,19 @@ class ProfileViewModel(
         }
     }
 
+    fun onRefresh() {
+        viewModelScope.launch {
+            _uiState.update { it.copy(isRefreshing = true) }
+            val statusList = statusRepository.findAllHome()
+            _uiState.update {
+                it.copy(
+                    statusList = StatusConverter.convertToBindingModel(statusList)
+                )
+            }
+            _uiState.update { it.copy(isRefreshing = false) }
+        }
+    }
+
     fun onClickEdit() {
         _navigateToEdit.value = Unit
     }

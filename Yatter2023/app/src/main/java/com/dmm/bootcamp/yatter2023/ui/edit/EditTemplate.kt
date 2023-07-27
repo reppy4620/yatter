@@ -43,6 +43,7 @@ fun EditTemplate(
     note: String,
     avatar: String,
     header: String,
+    canSave: Boolean,
     onClickCancel: () -> Unit,
     onClickSave: () -> Unit,
     onChangedDisplayName: (String) -> Unit,
@@ -74,10 +75,11 @@ fun EditTemplate(
                     )
                     TextButton(
                         onClick = onClickSave,
+                        enabled = canSave
                     ) {
                         Text(
                             text = stringResource(id = R.string.edit_save),
-                            color = Color.White,
+                            color = if (canSave) Color.White else Color.Gray,
                         )
                     }
                 }
@@ -151,6 +153,7 @@ private fun EditTemplatePreview() {
                 note = "Hello, World",
                 avatar = stringResource(id = R.string.profile_sample_avatar),
                 header = stringResource(id = R.string.profile_sample_header),
+                canSave = false,
                 onClickCancel = {},
                 onClickSave = {},
                 onChangedDisplayName = {},

@@ -21,6 +21,8 @@ fun ProfilePage(
         followerCount = uiState.bindingModel.followerCount,
         statusList = uiState.statusList,
         isLoading = uiState.isLoading,
+        isRefreshing = uiState.isRefreshing,
+        onRefresh = viewModel::onRefresh,
         onClickEdit = viewModel::onClickEdit
     )
 }

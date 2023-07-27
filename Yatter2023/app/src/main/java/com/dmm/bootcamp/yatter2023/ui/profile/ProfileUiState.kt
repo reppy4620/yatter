@@ -6,6 +6,7 @@ data class ProfileUiState(
     val bindingModel: ProfileBindingModel,
     val statusList: List<StatusBindingModel>,
     val isLoading: Boolean,
+    val isRefreshing: Boolean,
 ) {
     companion object {
         fun empty() = ProfileUiState(
@@ -19,7 +20,8 @@ data class ProfileUiState(
                 followerCount = 0
             ),
             statusList = listOf(),
-            isLoading = false
+            isLoading = false,
+            isRefreshing = false,
         )
     }
 }

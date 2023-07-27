@@ -28,7 +28,8 @@ class EditViewModel(
     fun onChangedDisplayName(displayName: String) {
         _uiState.update {
             it.copy(
-                bindingModel = uiState.value.bindingModel.copy(displayName = displayName)
+                bindingModel = uiState.value.bindingModel.copy(displayName = displayName),
+                canSave = true
             )
         }
     }
@@ -36,7 +37,8 @@ class EditViewModel(
     fun onChangedNote(note: String) {
         _uiState.update {
             it.copy(
-                bindingModel = uiState.value.bindingModel.copy(note = note)
+                bindingModel = uiState.value.bindingModel.copy(note = note),
+                canSave = true
             )
         }
     }

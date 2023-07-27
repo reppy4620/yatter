@@ -19,12 +19,16 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.Text
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -49,6 +53,7 @@ import com.dmm.bootcamp.yatter2023.ui.timeline.StatusRow
 import com.dmm.bootcamp.yatter2023.ui.timeline.bindingmodel.MediaBindingModel
 import com.dmm.bootcamp.yatter2023.ui.timeline.bindingmodel.StatusBindingModel
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ProfileTemplate(
     username: String,
@@ -60,14 +65,20 @@ fun ProfileTemplate(
     followerCount: Int,
     statusList: List<StatusBindingModel>,
     isLoading: Boolean,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
     onClickEdit: () -> Unit,
 ) {
     // TODO: Delete placeholder
     val displayName = if (displayName.isNotEmpty()) displayName else stringResource(id = R.string.profile_sample_display_name)
     val avatar = if (URLUtil.isValidUrl(avatar)) avatar else stringResource(id = R.string.profile_sample_avatar)
     val header = if (URLUtil.isValidUrl(header)) header else stringResource(id = R.string.profile_sample_header)
+
+    val pullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh)
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .pullRefresh(pullRefreshState),
     ) {
         val startSpace = 20
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -144,6 +155,11 @@ fun ProfileTemplate(
                 }
             }
         }
+        PullRefreshIndicator(
+            refreshing = isRefreshing,
+            state = pullRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter)
+        )
         if (isLoading) {
             FullScreenLoadingIndicator()
         }
@@ -222,6 +238,8 @@ private fun ProfileTemplatePreview() {
                     )
                 ),
                 isLoading = true,
+                isRefreshing = false,
+                onRefresh = {},
                 onClickEdit = {}
             )
         }

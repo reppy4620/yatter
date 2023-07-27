@@ -13,6 +13,7 @@ fun EditPage(viewModel: EditViewModel) {
         note = uiState.bindingModel.note,
         avatar = uiState.bindingModel.avatar,
         header = uiState.bindingModel.header,
+        canSave = uiState.canSave,
         onClickCancel = viewModel::onClickCancel,
         onClickSave = viewModel::onClickSave,
         onChangedDisplayName = viewModel::onChangedDisplayName,
