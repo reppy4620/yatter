@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmm.bootcamp.yatter2023.domain.repository.StatusRepository
+import com.dmm.bootcamp.yatter2023.domain.service.GetMeService
 import com.dmm.bootcamp.yatter2023.ui.timeline.bindingmodel.converter.StatusConverter
 import com.dmm.bootcamp.yatter2023.util.SingleLiveEvent
 import kotlinx.coroutines.flow.MutableStateFlow

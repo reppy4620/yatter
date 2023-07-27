@@ -4,7 +4,8 @@ data class LoginUiState(
     val loginBindingModel: LoginBindingModel,
     val isLoading: Boolean,
     val validUsername: Boolean,
-    val validPassword: Boolean
+    val validPassword: Boolean,
+    val passwordVisible: Boolean
 ) {
     val isEnableLogin: Boolean = validUsername && validPassword
 
@@ -13,7 +14,8 @@ data class LoginUiState(
             loginBindingModel = LoginBindingModel("", ""),
             isLoading = false,
             validUsername = false,
-            validPassword = false
+            validPassword = false,
+            passwordVisible = false
         )
     }
 }

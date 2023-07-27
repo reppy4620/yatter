@@ -22,10 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -46,9 +43,10 @@ fun LoginTemplate(
     isEnableLogin: Boolean,
     isLoading: Boolean,
     onClickLogin: () -> Unit,
-    onClickRegister: () -> Unit
+    onClickRegister: () -> Unit,
+    passwordVisible: Boolean,
+    onChangedPasswordVisible: () -> Unit
 ) {
-    var passwordVisible by rememberSaveable { mutableStateOf(false) }
     Scaffold(
         topBar = {
             TopAppBar(
@@ -62,7 +60,8 @@ fun LoginTemplate(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-                .padding(8.dp)
+                .padding(8.dp),
+            contentAlignment = Alignment.Center
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
                 Text(
@@ -106,7 +105,7 @@ fun LoginTemplate(
                         } else {
                             Pair(Icons.Filled.VisibilityOff, stringResource(id = R.string.login_password_show))
                         }
-                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                        IconButton(onClick = onChangedPasswordVisible) {
                             Icon(icon, description)
                         }
                     }
@@ -150,9 +149,11 @@ fun LoginTemplatePreview() {
                 password = "password",
                 onChangedPassword = {},
                 isEnableLogin = true,
-                isLoading = false,
+                isLoading = true,
                 onClickLogin = {},
-                onClickRegister = {}
+                onClickRegister = {},
+                passwordVisible = false,
+                onChangedPasswordVisible = {}
             )
         }
     }

@@ -17,6 +17,8 @@ fun LoginPage(viewModel: LoginViewModel) {
         isEnableLogin = uiState.isEnableLogin,
         isLoading = uiState.isLoading,
         onClickLogin = viewModel::onClickLogin,
-        onClickRegister = viewModel::onClickRegister
+        onClickRegister = viewModel::onClickRegister,
+        passwordVisible = uiState.passwordVisible,
+        onChangedPasswordVisible = viewModel::onChangedPasswordVisible
     )
 }

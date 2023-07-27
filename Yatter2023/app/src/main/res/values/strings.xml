@@ -33,4 +33,15 @@
     <string name="register_password_label">Password</string>
     <string name="register_password_placeholder">password</string>
     <string name="register_register_button">Register</string>
+
+    <!-- Profile Page -->
+    <string name="profile_edit">Edit</string>
+    <string name="profile_tab_tweet">Tweet</string>
+
+    <string name="profile_sample_display_name">Unknown</string>
+    <string name="profile_sample_avatar">https://applimura.com/wp-content/uploads/2019/08/twittericon13.jpg</string>
+    <string name="profile_sample_header">https://images.pexels.com/photos/34950/pexels-photo.jpg</string>
+
+    <!-- NavigationDrawer -->
+    <string name="drawer_profile">Profile</string>
 </resources>

@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -67,9 +68,10 @@ fun RegisterAccountTemplate(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-                .padding(8.dp)
+                .padding(8.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Column {
+            Column(modifier = Modifier.fillMaxSize()) {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -142,7 +144,7 @@ private fun RegisterAccountTemplatePreview() {
                 password = "SamplePassword",
                 onChangedPassword = {},
                 isEnableRegister = true,
-                isLoading = false,
+                isLoading = true,
                 onClickRegister = {},
                 onClickNavIcon = {}
             )

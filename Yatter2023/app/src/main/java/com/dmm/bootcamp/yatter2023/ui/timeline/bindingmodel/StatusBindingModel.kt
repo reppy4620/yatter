@@ -6,5 +6,5 @@ data class StatusBindingModel(
     val username: String,
     val avatar: String?,
     val content: String,
-    val attachmentMediaList: List<MediaBindingModel>
+    val attachmentMediaList: List<MediaBindingModel>,
 )

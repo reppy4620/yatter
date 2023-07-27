@@ -7,8 +7,10 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.Surface
 import com.dmm.bootcamp.yatter2023.ui.post.PostActivity
+import com.dmm.bootcamp.yatter2023.ui.profile.ProfileActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import com.dmm.bootcamp.yatter2023.ui.theme.Yatter2023Theme
+import com.dmm.bootcamp.yatter2023.ui.timeline.drawer.DrawerViewModel
 
 class PublicTimelineActivity : AppCompatActivity() {
     companion object {
@@ -18,7 +20,8 @@ class PublicTimelineActivity : AppCompatActivity() {
         )
     }
 
-    private val viewModel: PublicTimelineViewModel by viewModel()
+    private val publicTimelineViewModel: PublicTimelineViewModel by viewModel()
+    private val drawerViewModel: DrawerViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,18 +29,26 @@ class PublicTimelineActivity : AppCompatActivity() {
         setContent {
             Yatter2023Theme {
                 Surface {
-                    PublicTimelinePage(viewModel = viewModel)
+                    PublicTimelinePage(
+                        publicTimelineViewModel = publicTimelineViewModel,
+                        drawerViewModel = drawerViewModel
+                    )
                 }
             }
         }
 
-        viewModel.navigateToPost.observe(this) {
+        publicTimelineViewModel.navigateToPost.observe(this) {
             startActivity(PostActivity.newIntent(this))
+        }
+
+        drawerViewModel.navigateToProfile.observe(this) {
+            startActivity(ProfileActivity.newIntent(this))
         }
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.onResume()
+        publicTimelineViewModel.onResume()
+        drawerViewModel.onResume()
     }
 }

@@ -1,0 +1,154 @@
+package com.dmm.bootcamp.yatter2023.ui.profile
+
+import android.webkit.URLUtil
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.Divider
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Surface
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import com.dmm.bootcamp.yatter2023.R
+import com.dmm.bootcamp.yatter2023.ui.component.FullScreenLoadingIndicator
+import com.dmm.bootcamp.yatter2023.ui.theme.Yatter2023Theme
+
+@Composable
+fun ProfileTemplate(
+    username: String,
+    displayName: String,
+    note: String,
+    avatar: String?,
+    header: String?,
+    followingCount: Int,
+    followerCount: Int,
+    isLoading: Boolean,
+    onClickEdit: () -> Unit,
+) {
+    // TODO: Delete placeholder
+    val displayName = if (displayName.isNotEmpty()) displayName else stringResource(id = R.string.profile_sample_display_name)
+    val avatar = if (URLUtil.isValidUrl(avatar)) avatar else stringResource(id = R.string.profile_sample_avatar)
+    val header = if (URLUtil.isValidUrl(header)) header else stringResource(id = R.string.profile_sample_header)
+    Box(
+        modifier = Modifier.fillMaxSize(),
+    ) {
+        val startSpace = 20
+        Column(modifier = Modifier.fillMaxWidth()) {
+            AsyncImage(
+                model = header,
+                contentDescription = "header",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .size(100.dp),
+                contentScale = ContentScale.Crop
+            )
+            Divider(thickness = 1.dp)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                AsyncImage(
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(CircleShape),
+                    model = avatar,
+                    contentDescription = "avatar image",
+                    contentScale = ContentScale.Crop
+                )
+                OutlinedButton(
+                    onClick = onClickEdit,
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = Color.Black,
+                        backgroundColor = Color.White,
+                    ),
+                    border = BorderStroke(1.dp, Color.Black),
+                    shape = RoundedCornerShape(30.dp)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.profile_edit),
+                    )
+                }
+            }
+            Text(
+                text = displayName,
+                fontWeight = FontWeight.Bold,
+                fontSize = 25.sp,
+                modifier = Modifier.padding(start = startSpace.dp)
+            )
+            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                Text(text = "@${username}", modifier = Modifier.padding(start = startSpace.dp))
+            }
+            Spacer(modifier = Modifier.padding(vertical = 8.dp))
+            Text(text = note, modifier = Modifier.padding(start = startSpace.dp))
+            Spacer(modifier = Modifier.padding(vertical = 5.dp))
+            Row(modifier = Modifier.padding(start = startSpace.dp)) {
+                Text(text = "$followingCount", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 2.dp))
+                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                    Text(text = "following")
+                }
+                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+                Text(text = "$followerCount", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 2.dp))
+                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                    Text(text = "followers")
+                }
+            }
+            Divider(thickness = 1.dp, modifier = Modifier.padding(top = 10.dp))
+        }
+        if (isLoading) {
+            FullScreenLoadingIndicator()
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun ProfileTemplatePreview() {
+    Yatter2023Theme {
+        Surface {
+            ProfileTemplate(
+                username = "yt8492",
+                displayName = "mayamito",
+                note = "Hello, World",
+                avatar = "https://avatars.githubusercontent.com/u/39693306?v=4",
+                header = "https://pbs.twimg.com/profile_banners/972404402425245697/1690337648/1500x500",
+                followingCount = 50,
+                followerCount = 100,
+                isLoading = true,
+                onClickEdit = {}
+            )
+        }
+    }
+}

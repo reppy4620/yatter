@@ -77,4 +77,12 @@ class LoginViewModel(
     fun onClickRegister() {
         _navigateToRegister.value = Unit
     }
+
+    fun onChangedPasswordVisible() {
+        _uiState.update {
+            it.copy(
+                passwordVisible = !uiState.value.passwordVisible
+            )
+        }
+    }
 }

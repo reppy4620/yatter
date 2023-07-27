@@ -1,0 +1,25 @@
+package com.dmm.bootcamp.yatter2023.ui.profile
+
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+
+
+@Composable
+fun ProfilePage(
+    viewModel: ProfileViewModel
+) {
+    val uiState: ProfileUiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    ProfileTemplate(
+        username = uiState.bindingModel.username,
+        displayName = uiState.bindingModel.displayName,
+        note = uiState.bindingModel.note,
+        avatar = uiState.bindingModel.avatar,
+        header = uiState.bindingModel.header,
+        followingCount = uiState.bindingModel.followingCount,
+        followerCount = uiState.bindingModel.followerCount,
+        isLoading = uiState.isLoading,
+        onClickEdit = viewModel::onClickEdit
+    )
+}
