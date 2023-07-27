@@ -20,6 +20,7 @@ fun PublicTimelinePage(
         isRefreshing = timelineUiState.isRefreshing,
         onRefresh = publicTimelineViewModel::onRefresh,
         onClickPost = publicTimelineViewModel::onClickPost,
-        onClickProfile = drawerViewModel::onClickProfile
+        onClickRow = {},
+        onClickProfile = drawerViewModel::onClickProfile,
     )
 }

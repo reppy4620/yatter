@@ -48,7 +48,8 @@ fun PublicTimelineTemplate(
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     onClickPost: () -> Unit,
-    onClickProfile: () -> Unit
+    onClickRow: () -> Unit,
+    onClickProfile: () -> Unit,
 ) {
     val pullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh)
     val scaffoldState = rememberScaffoldState()
@@ -106,7 +107,10 @@ fun PublicTimelineTemplate(
                 contentPadding = PaddingValues(8.dp)
             ) {
                 items(statusList) { item ->
-                    StatusRow(statusBindingModel = item)
+                    StatusRow(
+                        statusBindingModel = item,
+                        onClick = onClickRow
+                    )
                     Divider(thickness = 1.dp)
                 }
             }
@@ -197,7 +201,8 @@ private fun PublicTimelineTemplatePreview() {
                 isRefreshing = false,
                 onRefresh = {},
                 onClickPost = {},
-                onClickProfile = {}
+                onClickProfile = {},
+                onClickRow = {}
             )
         }
     }

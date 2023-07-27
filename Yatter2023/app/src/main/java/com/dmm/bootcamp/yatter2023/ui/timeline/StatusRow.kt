@@ -1,5 +1,6 @@
 package com.dmm.bootcamp.yatter2023.ui.timeline
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,12 +40,14 @@ import com.dmm.bootcamp.yatter2023.ui.timeline.bindingmodel.StatusBindingModel
 @Composable
 fun StatusRow(
     statusBindingModel: StatusBindingModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .padding(vertical = 6.dp)
+            .clickable { onClick() }
     ) {
         AsyncImage(
             modifier = Modifier
@@ -131,7 +134,8 @@ private fun StatusRowPreview() {
                         ),
                     )
                 ),
-                modifier = Modifier
+                modifier = Modifier,
+                onClick = {}
             )
         }
     }

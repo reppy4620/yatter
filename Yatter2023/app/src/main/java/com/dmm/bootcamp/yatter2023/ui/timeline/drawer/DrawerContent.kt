@@ -77,7 +77,7 @@ fun DrawerContent(
                     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                         Text(text = "following")
                     }
-                    Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+                    Spacer(modifier = Modifier.width(10.dp))
                     Text(text = "$followerCount", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 2.dp))
                     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
                         Text(text = "followers")
