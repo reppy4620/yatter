@@ -22,5 +22,6 @@ fun PublicTimelinePage(
         onClickPost = publicTimelineViewModel::onClickPost,
         onClickRow = {},
         onClickProfile = drawerViewModel::onClickProfile,
+        onClickLogout = drawerViewModel::onClickLogout
     )
 }

@@ -2,10 +2,12 @@ package com.dmm.bootcamp.yatter2023.ui.timeline.drawer
 
 import android.webkit.URLUtil
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,14 +15,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ContentAlpha
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -42,7 +47,8 @@ fun DrawerContent(
     avatar: String?,
     followingCount: Int,
     followerCount: Int,
-    onClickProfile: () -> Unit
+    onClickProfile: () -> Unit,
+    onClickLogout: () -> Unit
 ) {
     // TODO: Delete placeholder
     val displayName = displayName.ifEmpty { stringResource(id = R.string.profile_sample_display_name) }
@@ -85,11 +91,31 @@ fun DrawerContent(
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
-            DrawerItem(
-                icon = Icons.Default.Person,
-                text = stringResource(id = R.string.drawer_profile),
-                onClick = onClickProfile
-            )
+            Divider()
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Column {
+                    DrawerItem(
+                        icon = Icons.Default.Person,
+                        text = stringResource(id = R.string.drawer_profile),
+                        onClick = onClickProfile
+                    )
+                }
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Divider(modifier = Modifier.padding(bottom = 30.dp))
+                    TextButton(onClick = onClickLogout) {
+                        Text(
+                            text = stringResource(id = R.string.drawer_logout),
+                            fontSize = 20.sp
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -126,7 +152,8 @@ private fun DrawerContentPreview() {
                 avatar = "https://avatars.githubusercontent.com/u/19385268?v=4",
                 followingCount = 0,
                 followerCount = 0,
-                onClickProfile = {}
+                onClickProfile = {},
+                onClickLogout = {}
             )
         }
     }

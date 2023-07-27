@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmm.bootcamp.yatter2023.domain.service.GetMeService
+import com.dmm.bootcamp.yatter2023.domain.service.LogoutService
 import com.dmm.bootcamp.yatter2023.util.SingleLiveEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class DrawerViewModel(
     private val getMeService: GetMeService,
+    private val logoutService: LogoutService
 ): ViewModel() {
 
     private val _uiState: MutableStateFlow<DrawerUiState> =
@@ -20,6 +22,9 @@ class DrawerViewModel(
 
     private val _navigateToProfile: SingleLiveEvent<Unit> = SingleLiveEvent()
     val navigateToProfile: LiveData<Unit> = _navigateToProfile
+
+    private val _navigateToLogin: SingleLiveEvent<Unit> = SingleLiveEvent()
+    val navigateToLogin: LiveData<Unit> = _navigateToLogin
 
     private suspend fun fetchMe() {
         val me = getMeService.execute() ?: return
@@ -47,5 +52,12 @@ class DrawerViewModel(
 
     fun onClickProfile() {
         _navigateToProfile.value = Unit
+    }
+
+    fun onClickLogout() {
+        viewModelScope.launch {
+            logoutService.execute()
+            _navigateToLogin.value = Unit
+        }
     }
 }

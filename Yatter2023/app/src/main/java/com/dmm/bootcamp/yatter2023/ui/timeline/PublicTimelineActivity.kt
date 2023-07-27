@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.Surface
+import com.dmm.bootcamp.yatter2023.ui.login.LoginActivity
 import com.dmm.bootcamp.yatter2023.ui.post.PostActivity
 import com.dmm.bootcamp.yatter2023.ui.profile.ProfileActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -43,6 +44,11 @@ class PublicTimelineActivity : AppCompatActivity() {
 
         drawerViewModel.navigateToProfile.observe(this) {
             startActivity(ProfileActivity.newIntent(this))
+        }
+
+        drawerViewModel.navigateToLogin.observe(this) {
+            startActivity(LoginActivity.newIntent(this))
+            finish()
         }
     }
 

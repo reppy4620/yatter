@@ -44,4 +44,12 @@
 
     <!-- NavigationDrawer -->
     <string name="drawer_profile">Profile</string>
+    <string name="drawer_logout">Logout</string>
+
+    <!-- Edit Page -->
+    <string name="edit_title">Edit</string>
+    <string name="edit_cancel">Cancel</string>
+    <string name="edit_save">Save</string>
+    <string name="edit_display_name">Display Name</string>
+    <string name="edit_note">Note</string>
 </resources>

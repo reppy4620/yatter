@@ -50,6 +50,7 @@ fun PublicTimelineTemplate(
     onClickPost: () -> Unit,
     onClickRow: () -> Unit,
     onClickProfile: () -> Unit,
+    onClickLogout: () -> Unit
 ) {
     val pullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh)
     val scaffoldState = rememberScaffoldState()
@@ -80,7 +81,8 @@ fun PublicTimelineTemplate(
                 avatar = profile.avatar,
                 followingCount = profile.followingCount,
                 followerCount = profile.followerCount,
-                onClickProfile = onClickProfile
+                onClickProfile = onClickProfile,
+                onClickLogout = onClickLogout
             )
         },
         floatingActionButton = {
@@ -202,7 +204,8 @@ private fun PublicTimelineTemplatePreview() {
                 onRefresh = {},
                 onClickPost = {},
                 onClickProfile = {},
-                onClickRow = {}
+                onClickRow = {},
+                onClickLogout = {},
             )
         }
     }
