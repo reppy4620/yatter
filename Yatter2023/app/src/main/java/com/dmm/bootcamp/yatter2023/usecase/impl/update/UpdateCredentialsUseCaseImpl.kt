@@ -29,7 +29,7 @@ class UpdateCredentialsUseCaseImpl(
                 newDisplayName = newDisplayName ?: me.displayName,
                 newNote = newNote ?: me.note,
                 newAvatar = newAvatar,
-                newHeader = newAvatar
+                newHeader = newHeader
             )
             UpdateCredentialsUseCaseResult.Success
         } catch (e: Exception) {

@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.dmm.bootcamp.yatter2023.R
+import com.dmm.bootcamp.yatter2023.ui.component.FullScreenLoadingIndicator
 import com.dmm.bootcamp.yatter2023.ui.theme.Yatter2023Theme
 import java.io.File
 
@@ -53,6 +54,7 @@ fun EditTemplate(
     avatar: String,
     header: String,
     canSave: Boolean,
+    isLoading: Boolean,
     onClickCancel: () -> Unit,
     onClickSave: () -> Unit,
     onChangedDisplayName: (String) -> Unit,
@@ -72,7 +74,7 @@ fun EditTemplate(
     val avatarLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia()) {
         avatarUri = it.toString()
         val inputStream = it?.let { context.contentResolver.openInputStream(it) } ?: return@rememberLauncherForActivityResult
-        val imageFile = File.createTempFile("upload", "tmp", context.cacheDir).apply {
+        val imageFile = File.createTempFile("upload", "tmp_avatar", context.cacheDir).apply {
             outputStream().use { fileOutputStream -> inputStream.copyTo(fileOutputStream) }
         }
         onChangedAvatar(imageFile)
@@ -80,7 +82,7 @@ fun EditTemplate(
     val headerLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia()) {
         headerUri = it.toString()
         val inputStream = it?.let { context.contentResolver.openInputStream(it) } ?: return@rememberLauncherForActivityResult
-        val imageFile = File.createTempFile("upload", "tmp", context.cacheDir).apply {
+        val imageFile = File.createTempFile("upload", "tmp_header", context.cacheDir).apply {
             outputStream().use { fileOutputStream -> inputStream.copyTo(fileOutputStream) }
         }
         onChangedHeader(imageFile)
@@ -190,6 +192,9 @@ fun EditTemplate(
                 }
             }
         }
+        if (isLoading) {
+            FullScreenLoadingIndicator()
+        }
     }
 }
 
@@ -204,6 +209,7 @@ private fun EditTemplatePreview() {
                 avatar = stringResource(id = R.string.profile_sample_avatar),
                 header = stringResource(id = R.string.profile_sample_header),
                 canSave = false,
+                isLoading = true,
                 onClickCancel = {},
                 onClickSave = {},
                 onChangedDisplayName = {},

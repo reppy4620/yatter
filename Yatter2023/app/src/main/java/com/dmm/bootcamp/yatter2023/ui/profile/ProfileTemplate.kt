@@ -70,11 +70,6 @@ fun ProfileTemplate(
     onRefresh: () -> Unit,
     onClickEdit: () -> Unit,
 ) {
-    // TODO: Delete placeholder
-    val displayName = displayName.ifEmpty { stringResource(id = R.string.profile_sample_display_name) }
-    val avatar = avatar ?: stringResource(id = R.string.profile_sample_avatar)
-    val header =  header ?: stringResource(id = R.string.profile_sample_header)
-
     val pullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh)
     Box(
         modifier = Modifier

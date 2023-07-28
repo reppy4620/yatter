@@ -53,9 +53,6 @@ fun DrawerContent(
     onClickProfile: () -> Unit,
     onClickLogout: () -> Unit
 ) {
-    // TODO: Delete placeholder
-    val displayName = displayName.ifEmpty { stringResource(id = R.string.profile_sample_display_name) }
-    val avatar = if (URLUtil.isValidUrl(avatar)) avatar else stringResource(id = R.string.profile_sample_avatar)
     Box(
         modifier = Modifier
             .fillMaxWidth()

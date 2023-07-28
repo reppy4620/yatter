@@ -14,6 +14,7 @@ fun EditPage(viewModel: EditViewModel) {
         avatar = uiState.bindingModel.avatar,
         header = uiState.bindingModel.header,
         canSave = uiState.canSave,
+        isLoading = uiState.isLoading,
         onClickCancel = viewModel::onClickCancel,
         onClickSave = viewModel::onClickSave,
         onChangedDisplayName = viewModel::onChangedDisplayName,
