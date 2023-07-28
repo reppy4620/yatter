@@ -1,6 +1,8 @@
 package com.dmm.bootcamp.yatter2023.ui.timeline.drawer
 
 import android.webkit.URLUtil
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,6 +30,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -63,7 +66,8 @@ fun DrawerContent(
                 AsyncImage(
                     modifier = Modifier
                         .size(70.dp)
-                        .clip(CircleShape),
+                        .clip(CircleShape)
+                        .border(BorderStroke(1.dp, Color.Gray), CircleShape),
                     model = avatar,
                     contentDescription = "avatar image",
                     contentScale = ContentScale.Crop

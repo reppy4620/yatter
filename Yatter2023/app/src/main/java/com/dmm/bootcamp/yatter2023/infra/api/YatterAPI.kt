@@ -60,8 +60,8 @@ interface YatterApi {
   @POST("accounts/update_credentials")
   suspend fun updateCredentials(
     @Header("Authentication") token: String,
-    @Part("display_name") displayName: RequestBody?,
-    @Part note: RequestBody?,
+    @Part("display_name") displayName: RequestBody? = null,
+    @Part("note") note: RequestBody? = null,
     @Part avatar: MultipartBody.Part? = null,
     @Part header: MultipartBody.Part? = null
   ): AccountJson

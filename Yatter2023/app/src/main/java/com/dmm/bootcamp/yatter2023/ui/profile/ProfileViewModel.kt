@@ -22,7 +22,7 @@ class ProfileViewModel(
     private val _navigateToEdit: SingleLiveEvent<Unit> = SingleLiveEvent()
     val navigateToEdit: LiveData<Unit> = _navigateToEdit
 
-    fun onCreate() {
+    fun onResume() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             val me = getMeService.execute() ?: return@launch
@@ -31,7 +31,7 @@ class ProfileViewModel(
                 it.copy(
                     bindingModel = snapShotBindingModel.copy(
                         username = me.username.value,
-                        displayName = me.displayName ?: "Unknown",  // TODO: Delete placeholder
+                        displayName = me.displayName ?: "",
                         note = me.note ?: "",
                         avatar = me.avatar.toString(),
                         header = me.header.toString()

@@ -1,8 +1,7 @@
 package com.dmm.bootcamp.yatter2023.infra.domain.repository
 
 import android.accounts.AuthenticatorException
-import android.content.Context
-import android.net.Uri
+import android.util.Log
 import com.dmm.bootcamp.yatter2023.auth.TokenProvider
 import com.dmm.bootcamp.yatter2023.domain.model.Account
 import com.dmm.bootcamp.yatter2023.domain.model.Me
@@ -21,7 +20,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
-import java.net.URL
 
 class AccountRepositoryImpl(
   private val yatterApi: YatterApi,
@@ -61,20 +59,21 @@ class AccountRepositoryImpl(
     newAvatar: File?,
     newHeader: File?
   ): Me {
-//    TODO("Not Implemented")
     return try {
-      val token = tokenProvider.provide()
-      yatterApi.updateCredentials(
+      val token = tokenProvider.provideFromMe(me)
+      val accountJson = yatterApi.updateCredentials(
         token = token,
-        displayName = newDisplayName?.toRequestBody() ?: me.displayName.toString().toRequestBody(),
-        note = newNote?.toRequestBody() ?: me.note.toString().toRequestBody(),
+        displayName = newDisplayName?.toRequestBody("text/plain".toMediaTypeOrNull()),
+        note = newNote?.toRequestBody("text/plain".toMediaTypeOrNull()),
         avatar = newAvatar?.let { createMultipartBodyPart(it, "avatar") },
         header = newHeader?.let { createMultipartBodyPart(it, "header") }
       )
-      me
+      val account = AccountConverter.convertToDomainModel(accountJson)
+      MeConverter.convertToMe(account)
     } catch (e: AuthenticatorException) {
       me
     } catch (e: Exception) {
+      Log.d("AccountRepository", e.toString())
       me
     }
   }

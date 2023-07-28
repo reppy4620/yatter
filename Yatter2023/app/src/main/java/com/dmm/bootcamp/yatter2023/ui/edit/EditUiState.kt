@@ -12,7 +12,9 @@ data class EditUiState(
                 displayName = "",
                 note = "",
                 avatar = "",
-                header = ""
+                header = "",
+                uploadAvatar = null,
+                uploadHeader = null
             ),
             isLoading = false,
             canSave = false

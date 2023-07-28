@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.File
 
 class EditViewModel(
     private val getMeService: GetMeService,
@@ -29,7 +30,7 @@ class EditViewModel(
             _uiState.update {
                 it.copy(
                     bindingModel = snapShotBindingModel.copy(
-                        displayName = me.displayName ?: "",  // TODO: Delete placeholder
+                        displayName = me.displayName ?: "",
                         note = me.note ?: "",
                         avatar = me.avatar.toString(),
                         header = me.header.toString()
@@ -53,8 +54,8 @@ class EditViewModel(
                 me = me,
                 newDisplayName = snapShotBindingModel.displayName,
                 newNote = snapShotBindingModel.note,
-                newAvatar = snapShotBindingModel.avatar,
-                newHeader = snapShotBindingModel.header
+                newAvatar = snapShotBindingModel.uploadAvatar,
+                newHeader = snapShotBindingModel.uploadHeader
             )
             _goBack.value = Unit
         }
@@ -78,11 +79,25 @@ class EditViewModel(
         }
     }
 
-    fun onChangedAvatar(avatar: String) {
-
+    fun onChangedAvatar(avatar: File?) {
+        _uiState.update {
+            it.copy(
+                bindingModel = uiState.value.bindingModel.copy(
+                    uploadAvatar = avatar,
+                ),
+                canSave = true
+            )
+        }
     }
 
-    fun onChangedHeader(header: String) {
-
+    fun onChangedHeader(header: File?) {
+        _uiState.update {
+            it.copy(
+                bindingModel = uiState.value.bindingModel.copy(
+                    uploadHeader = header
+                ),
+                canSave = true
+            )
+        }
     }
 }

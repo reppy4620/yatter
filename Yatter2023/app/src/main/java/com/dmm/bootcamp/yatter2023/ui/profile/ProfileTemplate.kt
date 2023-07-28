@@ -2,6 +2,7 @@ package com.dmm.bootcamp.yatter2023.ui.profile
 
 import android.webkit.URLUtil
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -71,8 +72,8 @@ fun ProfileTemplate(
 ) {
     // TODO: Delete placeholder
     val displayName = displayName.ifEmpty { stringResource(id = R.string.profile_sample_display_name) }
-    val avatar = if (URLUtil.isValidUrl(avatar)) avatar else stringResource(id = R.string.profile_sample_avatar)
-    val header = if (URLUtil.isValidUrl(header)) header else stringResource(id = R.string.profile_sample_header)
+    val avatar = avatar ?: stringResource(id = R.string.profile_sample_avatar)
+    val header =  header ?: stringResource(id = R.string.profile_sample_header)
 
     val pullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh)
     Box(
@@ -102,7 +103,8 @@ fun ProfileTemplate(
                     AsyncImage(
                         modifier = Modifier
                             .size(100.dp)
-                            .clip(CircleShape),
+                            .clip(CircleShape)
+                            .border(BorderStroke(1.dp, Color.Gray), CircleShape),
                         model = avatar,
                         contentDescription = "avatar image",
                         contentScale = ContentScale.Crop

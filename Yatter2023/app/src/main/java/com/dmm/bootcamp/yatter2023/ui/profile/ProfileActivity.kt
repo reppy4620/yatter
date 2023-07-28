@@ -30,10 +30,14 @@ class ProfileActivity: AppCompatActivity() {
                 }
             }
         }
-        viewModel.onCreate()
 
         viewModel.navigateToEdit.observe(this) {
             startActivity(EditActivity.newIntent(this))
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.onResume()
     }
 }
