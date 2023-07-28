@@ -38,7 +38,7 @@
             android:name=".ui.post.PostActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.register_account.RegisterAccountActivity"
+            android:name=".ui.register.RegisterAccountActivity"
             android:exported="false" />
         <activity
             android:name=".ui.profile.ProfileActivity"

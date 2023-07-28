@@ -1,8 +1,12 @@
 package com.dmm.bootcamp.yatter2023.ui.profile
 
 import android.webkit.URLUtil
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +14,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,12 +26,16 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -69,6 +78,7 @@ fun ProfileTemplate(
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
     onClickEdit: () -> Unit,
+    onClickBack: () -> Unit
 ) {
     val pullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh)
     Box(
@@ -79,15 +89,29 @@ fun ProfileTemplate(
         val startSpace = 20
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             item {
-
-                AsyncImage(
-                    model = header,
-                    contentDescription = "header",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .size(100.dp),
-                    contentScale = ContentScale.Crop
-                )
+                Box(modifier = Modifier.fillMaxWidth().height(100.dp)) {
+                    AsyncImage(
+                        model = header,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .size(100.dp),
+                        contentScale = ContentScale.Crop
+                    )
+                    IconButton(
+                        onClick = onClickBack,
+                        modifier = Modifier
+                            .padding(start = 15.dp, top = 10.dp)
+                            .clip(CircleShape)
+                            .background(color = Color.Black.copy(alpha = 0.5f))
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = null,
+                            tint = Color.White
+                        )
+                    }
+                }
                 Divider(thickness = 1.dp)
                 Row(
                     modifier = Modifier
@@ -101,7 +125,7 @@ fun ProfileTemplate(
                             .clip(CircleShape)
                             .border(BorderStroke(1.dp, Color.Gray), CircleShape),
                         model = avatar,
-                        contentDescription = "avatar image",
+                        contentDescription = null,
                         contentScale = ContentScale.Crop
                     )
                     OutlinedButton(
@@ -236,7 +260,8 @@ private fun ProfileTemplatePreview() {
                 isLoading = false,
                 isRefreshing = false,
                 onRefresh = {},
-                onClickEdit = {}
+                onClickEdit = {},
+                onClickBack = {}
             )
         }
     }

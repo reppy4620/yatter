@@ -1,10 +1,14 @@
-package com.dmm.bootcamp.yatter2023.ui.register_account
+package com.dmm.bootcamp.yatter2023.ui.register
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmm.bootcamp.yatter2023.domain.model.Password
 import com.dmm.bootcamp.yatter2023.domain.model.Username
+import com.dmm.bootcamp.yatter2023.infra.domain.service.LoginServiceImpl
+import com.dmm.bootcamp.yatter2023.usecase.impl.login.LoginUseCaseImpl
+import com.dmm.bootcamp.yatter2023.usecase.login.LoginUseCase
+import com.dmm.bootcamp.yatter2023.usecase.login.LoginUseCaseResult
 import com.dmm.bootcamp.yatter2023.usecase.register.RegisterAccountUseCase
 import com.dmm.bootcamp.yatter2023.usecase.register.RegisterAccountUseCaseResult
 import com.dmm.bootcamp.yatter2023.util.SingleLiveEvent
@@ -14,7 +18,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class RegisterAccountViewModel(
-    private val registerAccountUseCase: RegisterAccountUseCase
+    private val registerAccountUseCase: RegisterAccountUseCase,
+    private val loginUseCase: LoginUseCase
 ): ViewModel() {
     private val _uiState: MutableStateFlow<RegisterAccountUiState> = MutableStateFlow(RegisterAccountUiState.empty())
     val uiState: StateFlow<RegisterAccountUiState> = _uiState
@@ -24,6 +29,9 @@ class RegisterAccountViewModel(
 
     private val _goBack: SingleLiveEvent<Unit> = SingleLiveEvent()
     val goBack: LiveData<Unit> = _goBack
+
+    private val _navigateToTimeline: SingleLiveEvent<Unit> = SingleLiveEvent()
+    val navigateToTimeline = _navigateToTimeline
 
     fun onChangedUsername(username: String) {
         val snapshotBindingModel = uiState.value.registerAccountBindingModel
@@ -61,9 +69,23 @@ class RegisterAccountViewModel(
                     )
             ) {
                 is RegisterAccountUseCaseResult.Success -> {
-                    _navigateToLogin.value = Unit
+
                 }
                 is RegisterAccountUseCaseResult.Failure -> {
+                    _goBack.value = Unit
+                }
+            }
+            when(
+                val result =
+                    loginUseCase.execute(
+                        username = Username(snapshotBindingModel.username),
+                        password = Password(snapshotBindingModel.password)
+                    )
+            ) {
+                is LoginUseCaseResult.Success -> {
+                    _navigateToTimeline.value = Unit
+                }
+                else -> {
 
                 }
             }

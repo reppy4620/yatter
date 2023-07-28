@@ -34,6 +34,10 @@ class ProfileActivity: AppCompatActivity() {
         viewModel.navigateToEdit.observe(this) {
             startActivity(EditActivity.newIntent(this))
         }
+
+        viewModel.goBack.observe(this) {
+            finish()
+        }
     }
 
     override fun onResume() {

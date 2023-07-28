@@ -79,22 +79,24 @@ class EditViewModel(
         }
     }
 
-    fun onChangedAvatar(avatar: File?) {
+    fun onChangedAvatar(avatarStr: String, avatarFile: File?) {
         _uiState.update {
             it.copy(
                 bindingModel = uiState.value.bindingModel.copy(
-                    uploadAvatar = avatar,
+                    avatar = avatarStr,
+                    uploadAvatar = avatarFile,
                 ),
                 canSave = true
             )
         }
     }
 
-    fun onChangedHeader(header: File?) {
+    fun onChangedHeader(headerStr: String, headerFile: File?) {
         _uiState.update {
             it.copy(
                 bindingModel = uiState.value.bindingModel.copy(
-                    uploadHeader = header
+                    header = headerStr,
+                    uploadHeader = headerFile
                 ),
                 canSave = true
             )

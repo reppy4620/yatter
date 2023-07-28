@@ -5,6 +5,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,17 +20,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Divider
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -59,33 +65,24 @@ fun EditTemplate(
     onClickSave: () -> Unit,
     onChangedDisplayName: (String) -> Unit,
     onChangedNote: (String) -> Unit,
-    onChangedAvatar: (File?) -> Unit,
-    onChangedHeader: (File?) -> Unit,
+    onChangedAvatar: (String, File?) -> Unit,
+    onChangedHeader: (String, File?) -> Unit,
 ) {
-
-    var avatarUri by rememberSaveable {
-        mutableStateOf(avatar)
-    }
-    var headerUri by rememberSaveable {
-        mutableStateOf(header)
-    }
 
     val context = LocalContext.current
     val avatarLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia()) {
-        avatarUri = it.toString()
         val inputStream = it?.let { context.contentResolver.openInputStream(it) } ?: return@rememberLauncherForActivityResult
         val imageFile = File.createTempFile("upload", "tmp_avatar", context.cacheDir).apply {
             outputStream().use { fileOutputStream -> inputStream.copyTo(fileOutputStream) }
         }
-        onChangedAvatar(imageFile)
+        onChangedAvatar(it.toString(), imageFile)
     }
     val headerLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia()) {
-        headerUri = it.toString()
         val inputStream = it?.let { context.contentResolver.openInputStream(it) } ?: return@rememberLauncherForActivityResult
         val imageFile = File.createTempFile("upload", "tmp_header", context.cacheDir).apply {
             outputStream().use { fileOutputStream -> inputStream.copyTo(fileOutputStream) }
         }
-        onChangedHeader(imageFile)
+        onChangedHeader(it.toString(), imageFile)
     }
 
     Scaffold(
@@ -131,7 +128,7 @@ fun EditTemplate(
             Spacer(modifier = Modifier.height(5.dp))
             Column {
                 AsyncImage(
-                    model = headerUri,
+                    model = header,
                     contentDescription = "header",
                     modifier = Modifier
                         .fillMaxWidth()
@@ -149,7 +146,7 @@ fun EditTemplate(
                 Spacer(modifier = Modifier.height(5.dp))
                 Column(modifier = Modifier.padding(horizontal = 10.dp)) {
                     AsyncImage(
-                        model = avatarUri,
+                        model = avatar,
                         modifier = Modifier
                             .size(100.dp)
                             .clip(CircleShape)
@@ -167,7 +164,7 @@ fun EditTemplate(
                     Divider(thickness = 1.dp, modifier = Modifier.padding(vertical = 8.dp))
                     OutlinedTextField(
                         value = displayName,
-                        maxLines = 1,
+                        singleLine = true,
                         onValueChange = onChangedDisplayName,
                         label = {
                             Text(text = stringResource(id = R.string.edit_display_name))
@@ -214,8 +211,8 @@ private fun EditTemplatePreview() {
                 onClickSave = {},
                 onChangedDisplayName = {},
                 onChangedNote = {},
-                onChangedAvatar = {},
-                onChangedHeader = {},
+                onChangedAvatar = {s, f -> },
+                onChangedHeader = {s, f -> },
             )
         }
     }

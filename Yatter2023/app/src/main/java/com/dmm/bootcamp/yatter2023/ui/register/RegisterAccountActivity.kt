@@ -1,4 +1,4 @@
-package com.dmm.bootcamp.yatter2023.ui.register_account
+package com.dmm.bootcamp.yatter2023.ui.register
 
 import android.content.Context
 import android.content.Intent
@@ -8,9 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.Surface
 import com.dmm.bootcamp.yatter2023.ui.login.LoginActivity
 import com.dmm.bootcamp.yatter2023.ui.theme.Yatter2023Theme
+import com.dmm.bootcamp.yatter2023.ui.timeline.PublicTimelineActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class RegisterAccountActivity: AppCompatActivity() {
+class RegisterAccountActivity : AppCompatActivity() {
     companion object {
         fun newIntent(context: Context): Intent = Intent(
             context,
@@ -33,6 +34,10 @@ class RegisterAccountActivity: AppCompatActivity() {
 
         viewModel.navigateToLogin.observe(this) {
             startActivity(LoginActivity.newIntent(this))
+            finish()
+        }
+        viewModel.navigateToTimeline.observe(this) {
+            startActivity(PublicTimelineActivity.newIntent(this))
             finish()
         }
         viewModel.goBack.observe(this) {

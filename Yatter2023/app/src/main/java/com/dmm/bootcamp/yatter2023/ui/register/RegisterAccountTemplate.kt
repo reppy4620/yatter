@@ -1,4 +1,4 @@
-package com.dmm.bootcamp.yatter2023.ui.register_account
+package com.dmm.bootcamp.yatter2023.ui.register
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

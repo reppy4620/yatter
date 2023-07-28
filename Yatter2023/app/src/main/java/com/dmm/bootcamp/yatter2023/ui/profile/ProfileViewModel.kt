@@ -22,6 +22,9 @@ class ProfileViewModel(
     private val _navigateToEdit: SingleLiveEvent<Unit> = SingleLiveEvent()
     val navigateToEdit: LiveData<Unit> = _navigateToEdit
 
+    private val _goBack: SingleLiveEvent<Unit> = SingleLiveEvent()
+    val goBack: LiveData<Unit> = _goBack
+
     fun onResume() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
@@ -64,5 +67,9 @@ class ProfileViewModel(
 
     fun onClickEdit() {
         _navigateToEdit.value = Unit
+    }
+
+    fun onClickBack() {
+        _goBack.value = Unit
     }
 }

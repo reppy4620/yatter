@@ -23,6 +23,7 @@ fun ProfilePage(
         isLoading = uiState.isLoading,
         isRefreshing = uiState.isRefreshing,
         onRefresh = viewModel::onRefresh,
-        onClickEdit = viewModel::onClickEdit
+        onClickEdit = viewModel::onClickEdit,
+        onClickBack = viewModel::onClickBack,
     )
 }
