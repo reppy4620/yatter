@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
@@ -16,6 +17,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -25,7 +27,11 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -55,6 +61,7 @@ fun PublicTimelineTemplate(
     val pullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh)
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
+    var showDialog by remember { mutableStateOf(false) }
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -82,7 +89,12 @@ fun PublicTimelineTemplate(
                 followingCount = profile.followingCount,
                 followerCount = profile.followerCount,
                 onClickProfile = onClickProfile,
-                onClickLogout = onClickLogout
+                onClickLogout = {
+                    scope.launch {
+                        scaffoldState.drawerState.close()
+                        showDialog = true
+                    }
+                }
             )
         },
         floatingActionButton = {
@@ -125,6 +137,34 @@ fun PublicTimelineTemplate(
                 CircularProgressIndicator()
             }
         }
+    }
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = {
+               showDialog = false
+            },
+            title = {
+                Text(text = stringResource(id = R.string.logout_title))
+            },
+            text = {
+               Text(text = stringResource(id = R.string.logout_text))
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showDialog = false
+                        onClickLogout()
+                    }
+                ) {
+                    Text(text = stringResource(id = R.string.logout_confirm))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDialog = false }) {
+                    Text(text = stringResource(id = R.string.logout_cancel))
+                }
+            }
+        )
     }
 }
 

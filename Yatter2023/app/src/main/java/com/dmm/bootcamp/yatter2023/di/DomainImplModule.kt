@@ -15,11 +15,11 @@ import com.dmm.bootcamp.yatter2023.infra.domain.service.LogoutServiceImpl
 import org.koin.dsl.module
 
 internal val domainImplModule = module {
-  single<AccountRepository> { AccountRepositoryImpl(get(), get()) }
+  single<AccountRepository> { AccountRepositoryImpl(get(), get(), get()) }
   single<StatusRepository> { StatusRepositoryImpl(get(), get()) }
 
   factory<CheckLoginService> { CheckLoginServiceImpl(get()) }
-  factory<GetMeService> { GetMeServiceImpl(get()) }
+  factory<GetMeService> { GetMeServiceImpl(get(), get()) }
   factory<LoginService> { LoginServiceImpl(get()) }
 
   factory<LogoutService> { LogoutServiceImpl(get()) }

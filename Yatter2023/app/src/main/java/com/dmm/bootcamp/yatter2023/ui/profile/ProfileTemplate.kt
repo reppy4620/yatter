@@ -70,7 +70,7 @@ fun ProfileTemplate(
     onClickEdit: () -> Unit,
 ) {
     // TODO: Delete placeholder
-    val displayName = if (displayName.isNotEmpty()) displayName else stringResource(id = R.string.profile_sample_display_name)
+    val displayName = displayName.ifEmpty { stringResource(id = R.string.profile_sample_display_name) }
     val avatar = if (URLUtil.isValidUrl(avatar)) avatar else stringResource(id = R.string.profile_sample_avatar)
     val header = if (URLUtil.isValidUrl(header)) header else stringResource(id = R.string.profile_sample_header)
 

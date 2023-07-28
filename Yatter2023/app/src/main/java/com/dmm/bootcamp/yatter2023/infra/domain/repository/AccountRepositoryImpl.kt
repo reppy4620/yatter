@@ -1,5 +1,6 @@
 package com.dmm.bootcamp.yatter2023.infra.domain.repository
 
+import com.dmm.bootcamp.yatter2023.auth.TokenProvider
 import com.dmm.bootcamp.yatter2023.domain.model.Account
 import com.dmm.bootcamp.yatter2023.domain.model.Me
 import com.dmm.bootcamp.yatter2023.domain.model.Password
@@ -17,6 +18,7 @@ import java.net.URL
 class AccountRepositoryImpl(
   private val yatterApi: YatterApi,
   private val mePreferences: MePreferences,
+  private val tokenProvider: TokenProvider
 ) : AccountRepository {
   override suspend fun create(
     username: Username,
@@ -51,6 +53,20 @@ class AccountRepositoryImpl(
     newAvatar: URL?,
     newHeader: URL?
   ): Me {
-    TODO("Not yet implemented")
+    TODO("Not Implemented")
+//    return try {
+//      val token = tokenProvider.provide()
+//      yatterApi.updateCredentials(
+//        token = token,
+//        displayName = newDisplayName?.toRequestBody() ?: me.displayName.toString().toRequestBody(),
+//        note = newNote?.toRequestBody() ?: me.note.toString().toRequestBody(),
+//        avatar =
+//      )
+//      me
+//    } catch (e: AuthenticatorException) {
+//      me
+//    } catch (e: Exception) {
+//      me
+//    }
   }
 }
