@@ -1,5 +1,8 @@
 package com.dmm.bootcamp.yatter2023.infra.domain.repository
 
+import android.accounts.AuthenticatorException
+import android.util.Log
+import com.dmm.bootcamp.yatter2023.auth.TokenProvider
 import com.dmm.bootcamp.yatter2023.domain.model.Account
 import com.dmm.bootcamp.yatter2023.domain.model.Me
 import com.dmm.bootcamp.yatter2023.domain.model.Password
@@ -12,11 +15,16 @@ import com.dmm.bootcamp.yatter2023.infra.domain.converter.MeConverter
 import com.dmm.bootcamp.yatter2023.infra.pref.MePreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.net.URL
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
 
 class AccountRepositoryImpl(
   private val yatterApi: YatterApi,
   private val mePreferences: MePreferences,
+  private val tokenProvider: TokenProvider
 ) : AccountRepository {
   override suspend fun create(
     username: Username,
@@ -48,9 +56,30 @@ class AccountRepositoryImpl(
     me: Me,
     newDisplayName: String?,
     newNote: String?,
-    newAvatar: URL?,
-    newHeader: URL?
+    newAvatar: File?,
+    newHeader: File?
   ): Me {
-    TODO("Not yet implemented")
+    return try {
+      val token = tokenProvider.provideFromMe(me)
+      val accountJson = yatterApi.updateCredentials(
+        token = token,
+        displayName = newDisplayName?.toRequestBody("text/plain".toMediaTypeOrNull()),
+        note = newNote?.toRequestBody("text/plain".toMediaTypeOrNull()),
+        avatar = newAvatar?.let { createMultipartBodyPart(it, "avatar") },
+        header = newHeader?.let { createMultipartBodyPart(it, "header") }
+      )
+      val account = AccountConverter.convertToDomainModel(accountJson)
+      MeConverter.convertToMe(account)
+    } catch (e: AuthenticatorException) {
+      me
+    } catch (e: Exception) {
+      Log.d("AccountRepository", e.toString())
+      me
+    }
+  }
+
+  private fun createMultipartBodyPart(imageFile: File, paramName: String): MultipartBody.Part {
+    val requestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+    return MultipartBody.Part.createFormData(paramName, imageFile.name, requestBody)
   }
 }

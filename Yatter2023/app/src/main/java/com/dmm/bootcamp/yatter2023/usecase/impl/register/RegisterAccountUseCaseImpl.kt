@@ -21,14 +21,13 @@ class RegisterAccountUseCaseImpl(
     if (password == "") {
       return RegisterAccountUseCaseResult.Failure.EmptyPassword
     }
-    val newPassword = Password(password)
-    if (!newPassword.validate()) {
+    if (!Password(password).validate()) {
       return RegisterAccountUseCaseResult.Failure.InvalidPassword
     }
 
     val me = accountRepository.create(
       Username(username),
-      newPassword
+      Password(password)
     )
     mePreferences.putUserName(me.username.value)
     return RegisterAccountUseCaseResult.Success

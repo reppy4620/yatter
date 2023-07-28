@@ -1,4 +1,61 @@
 <resources>
     <string name="app_name">Yatter2023</string>
+
+    <!-- Public Timeline Page -->
     <string name="public_timeline_avatar_content_description">アバター画像</string>
+    <string name="public_timeline_topbar">Timeline</string>
+    <string name="public_timeline_post">Post</string>
+
+    <!-- Login Page -->
+    <string name="login_topbar">Login</string>
+    <string name="login_username">Username</string>
+    <string name="login_username_placeholder">username</string>
+    <string name="login_password">Password</string>
+    <string name="login_password_placeholder">password</string>
+    <string name="login_login_button">Login</string>
+    <string name="login_register_guide">If you\'ve not registered</string>
+    <string name="login_register_text_button">Register</string>
+    <string name="login_password_hide">Hide Password</string>
+    <string name="login_password_show">Show Password</string>
+
+    <!-- Post Page -->
+    <string name="post_topbar">Post</string>
+    <string name="post_topbar_icon_desc">Back to PublicTimeline</string>
+    <string name="post_placeholder">What\'s happening?</string>
+    <string name="post_button">Tweet</string>
+    <string name="post_avatar_desc">Avatar image</string>
+
+    <!-- Register Page -->
+    <string name="register_topbar">Register</string>
+    <string name="register_topbar_icon_desc">Back to Login</string>
+    <string name="register_username_label">Username</string>
+    <string name="register_username_placeholder">username</string>
+    <string name="register_password_label">Password</string>
+    <string name="register_password_placeholder">password</string>
+    <string name="register_register_button">Register</string>
+
+    <!-- Profile Page -->
+    <string name="profile_edit">Edit</string>
+    <string name="profile_tab_tweet">Tweet</string>
+
+    <string name="profile_sample_display_name">Unknown</string>
+    <string name="profile_sample_avatar">https://applimura.com/wp-content/uploads/2019/08/twittericon13.jpg</string>
+    <string name="profile_sample_header">https://images.pexels.com/photos/34950/pexels-photo.jpg</string>
+
+    <!-- NavigationDrawer -->
+    <string name="drawer_profile">Profile</string>
+    <string name="drawer_logout">Logout</string>
+
+    <!-- Edit Page -->
+    <string name="edit_title">Edit</string>
+    <string name="edit_cancel">Cancel</string>
+    <string name="edit_save">Save</string>
+    <string name="edit_display_name">Display Name</string>
+    <string name="edit_note">Note</string>
+
+    <!-- Logout Dialog -->
+    <string name="logout_title">Logout</string>
+    <string name="logout_text">Are you sure you want to logout ?</string>
+    <string name="logout_confirm">OK</string>
+    <string name="logout_cancel">Cancel</string>
 </resources>

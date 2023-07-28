@@ -1,0 +1,294 @@
+package com.dmm.bootcamp.yatter2023.ui.profile
+
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import com.dmm.bootcamp.yatter2023.R
+import com.dmm.bootcamp.yatter2023.ui.component.FullScreenLoadingIndicator
+import com.dmm.bootcamp.yatter2023.ui.theme.Yatter2023Theme
+import com.dmm.bootcamp.yatter2023.ui.timeline.StatusRow
+import com.dmm.bootcamp.yatter2023.ui.timeline.bindingmodel.MediaBindingModel
+import com.dmm.bootcamp.yatter2023.ui.timeline.bindingmodel.StatusBindingModel
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun ProfileTemplate(
+    username: String,
+    displayName: String,
+    note: String,
+    avatar: String?,
+    header: String?,
+    followingCount: Int,
+    followerCount: Int,
+    statusList: List<StatusBindingModel>,
+    isLoading: Boolean,
+    isRefreshing: Boolean,
+    onRefresh: () -> Unit,
+    onClickEdit: () -> Unit,
+    onClickBack: () -> Unit
+) {
+    val pullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .pullRefresh(pullRefreshState),
+    ) {
+        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+            item {
+                Header(
+                    header = header,
+                    avatar = avatar,
+                    onClickBack = onClickBack,
+                    onClickEdit = onClickEdit
+                )
+                TextBody(
+                    username = username,
+                    displayName = displayName,
+                    note = note,
+                    followingCount = followingCount,
+                    followerCount = followerCount
+                )
+            }
+            items(statusList) {
+                StatusRow(
+                    statusBindingModel = it,
+                    onClick = {}
+                )
+                Divider()
+            }
+        }
+        PullRefreshIndicator(
+            refreshing = isRefreshing,
+            state = pullRefreshState,
+            modifier = Modifier.align(Alignment.TopCenter)
+        )
+        if (isLoading) {
+            FullScreenLoadingIndicator()
+        }
+    }
+}
+
+@Composable
+fun Header(
+    header: String?,
+    avatar: String?,
+    onClickBack: () -> Unit,
+    onClickEdit: () -> Unit
+) {
+
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .height(180.dp)) {
+        AsyncImage(
+            model = header,
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(130.dp),
+            contentScale = ContentScale.Crop
+        )
+        IconButton(
+            onClick = onClickBack,
+            modifier = Modifier
+                .padding(start = 15.dp, top = 20.dp)
+                .clip(CircleShape)
+                .background(color = Color.Black.copy(alpha = 0.5f))
+        ) {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = null,
+                tint = Color.White
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomStart),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            AsyncImage(
+                modifier = Modifier
+                    .padding(start = 15.dp)
+                    .size(100.dp)
+                    .clip(CircleShape)
+                    .border(BorderStroke(4.dp, Color.White), CircleShape),
+                model = avatar,
+                contentDescription = null,
+                contentScale = ContentScale.Crop
+            )
+            OutlinedButton(
+                modifier = Modifier
+                    .padding(top = 55.dp, end = 15.dp),
+                onClick = onClickEdit,
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = Color.Black,
+                    backgroundColor = Color.White,
+                ),
+                border = BorderStroke(1.dp, Color.Black),
+                shape = RoundedCornerShape(30.dp),
+            ) {
+                Text(
+                    text = stringResource(id = R.string.profile_edit),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun TextBody(
+    username: String,
+    displayName: String,
+    note: String,
+    followingCount: Int,
+    followerCount: Int,
+) {
+    val startSpace = 20
+    Text(
+        text = displayName,
+        fontWeight = FontWeight.Bold,
+        fontSize = 25.sp,
+        modifier = Modifier.padding(start = startSpace.dp)
+    )
+    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+        Text(text = "@${username}", modifier = Modifier.padding(start = startSpace.dp))
+    }
+    Spacer(modifier = Modifier.padding(vertical = 8.dp))
+    Text(text = note, modifier = Modifier.padding(start = startSpace.dp))
+    Spacer(modifier = Modifier.padding(vertical = 5.dp))
+    Row(modifier = Modifier.padding(start = startSpace.dp)) {
+        Text(text = "$followingCount", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 2.dp))
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+            Text(text = "following")
+        }
+        Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+        Text(text = "$followerCount", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 2.dp))
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+            Text(text = "followers")
+        }
+    }
+    Divider(thickness = 1.dp, modifier = Modifier.padding(top = 10.dp))
+}
+
+@Preview
+@Composable
+private fun ProfileTemplatePreview() {
+    Yatter2023Theme {
+        Surface {
+            ProfileTemplate(
+                username = "yt8492",
+                displayName = "mayamito",
+                note = "Hello, World",
+                avatar = "https://avatars.githubusercontent.com/u/39693306?v=4",
+                header = "https://pbs.twimg.com/profile_banners/972404402425245697/1690337648/1500x500",
+                followingCount = 50,
+                followerCount = 100,
+                statusList = listOf(
+                    StatusBindingModel(
+                        id = "id",
+                        displayName = "display name",
+                        username = "username",
+                        avatar = "https://avatars.githubusercontent.com/u/39693306?v=4",
+                        content = "preview content",
+                        attachmentMediaList = listOf(
+                            MediaBindingModel(
+                                id = "id",
+                                type = "image",
+                                url = "https://avatars.githubusercontent.com/u/39693306?v=4",
+                                description = "icon"
+                            ),
+                            MediaBindingModel(
+                                id = "id",
+                                type = "image",
+                                url = "https://avatars.githubusercontent.com/u/39693306?v=4",
+                                description = "icon"
+                            ),
+                            MediaBindingModel(
+                                id = "id",
+                                type = "image",
+                                url = "https://pbs.twimg.com/profile_banners/972404402425245697/1690337648/1500x500",
+                                description = "icon"
+                            )
+                        )
+                    ),
+                    StatusBindingModel(
+                        id = "id",
+                        displayName = "display name",
+                        username = "username",
+                        avatar = "https://pbs.twimg.com/profile_banners/972404402425245697/1690337648/1500x500",
+                        content = "preview content",
+                        attachmentMediaList = listOf(
+                            MediaBindingModel(
+                                id = "id",
+                                type = "image",
+                                url = "https://avatars.githubusercontent.com/u/39693306?v=4",
+                                description = "icon"
+                            ),
+                            MediaBindingModel(
+                                id = "id",
+                                type = "image",
+                                url = "https://pbs.twimg.com/profile_banners/972404402425245697/1690337648/1500x500",
+                                description = "icon"
+                            )
+                        )
+                    ),
+                    StatusBindingModel(
+                        id = "id",
+                        displayName = "display name",
+                        username = "username",
+                        avatar = null,
+                        content = "preview content",
+                        attachmentMediaList = listOf()
+                    )
+                ),
+                isLoading = false,
+                isRefreshing = false,
+                onRefresh = {},
+                onClickEdit = {},
+                onClickBack = {}
+            )
+        }
+    }
+}

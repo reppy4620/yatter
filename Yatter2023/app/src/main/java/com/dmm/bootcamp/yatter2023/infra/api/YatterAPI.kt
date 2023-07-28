@@ -5,10 +5,14 @@ import com.dmm.bootcamp.yatter2023.infra.api.json.CreateAccountJson
 import com.dmm.bootcamp.yatter2023.infra.api.json.FollowAccountJson
 import com.dmm.bootcamp.yatter2023.infra.api.json.PostStatusJson
 import com.dmm.bootcamp.yatter2023.infra.api.json.StatusJson
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -51,4 +55,14 @@ interface YatterApi {
   suspend fun followAccount(
     @Path("username") username: String
   ): FollowAccountJson
+
+  @Multipart
+  @POST("accounts/update_credentials")
+  suspend fun updateCredentials(
+    @Header("Authentication") token: String,
+    @Part("display_name") displayName: RequestBody? = null,
+    @Part("note") note: RequestBody? = null,
+    @Part avatar: MultipartBody.Part? = null,
+    @Part header: MultipartBody.Part? = null
+  ): AccountJson
 }
