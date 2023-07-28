@@ -101,12 +101,12 @@ fun PublicTimelineTemplate(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
+                .padding(top = 4.dp)
                 .pullRefresh(pullRefreshState),
             contentAlignment = Alignment.Center
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(8.dp)
             ) {
                 items(statusList) { item ->
                     StatusRow(

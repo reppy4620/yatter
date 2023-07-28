@@ -20,5 +20,5 @@ internal val viewModelModule = module {
 
   viewModel { DrawerViewModel(get(), get()) }
   viewModel { ProfileViewModel(get(), get()) }
-  viewModel { EditViewModel(get()) }
+  viewModel { EditViewModel(get(), get()) }
 }

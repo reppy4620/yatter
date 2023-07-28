@@ -30,6 +30,8 @@ class EditActivity: AppCompatActivity() {
             }
         }
 
+        viewModel.onCreate()
+
         viewModel.goBack.observe(this) {
             finish()
         }

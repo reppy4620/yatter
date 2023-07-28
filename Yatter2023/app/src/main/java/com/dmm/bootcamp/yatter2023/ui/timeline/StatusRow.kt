@@ -46,8 +46,8 @@ fun StatusRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 6.dp)
             .clickable { onClick() }
+            .padding(6.dp)
     ) {
         AsyncImage(
             modifier = Modifier
@@ -75,7 +75,16 @@ fun StatusRow(
                         .horizontalScroll(rememberScrollState())
                 ) {
                     statusBindingModel.attachmentMediaList.map {
-                        StatusImage(model = it.url, contentDescription = it.description)
+                        AsyncImage(
+                            model = it.url,
+                            contentDescription = it.description,
+                            modifier = Modifier
+                                .size(150.dp)
+                                .padding(3.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                                .clickable {  },
+                            contentScale = ContentScale.Crop
+                        )
                     }
                 }
             }
@@ -83,22 +92,6 @@ fun StatusRow(
         }
     }
 
-}
-
-@Composable
-fun StatusImage(
-    model: String,
-    contentDescription: String,
-) {
-    AsyncImage(
-        model = model,
-        contentDescription = contentDescription,
-        modifier = Modifier
-            .size(150.dp)
-            .padding(3.dp)
-            .clip(RoundedCornerShape(10.dp)),
-        contentScale = ContentScale.Crop
-    )
 }
 
 @Preview

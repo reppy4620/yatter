@@ -2,6 +2,7 @@ package com.dmm.bootcamp.yatter2023.ui.edit
 
 data class EditUiState(
     val bindingModel: EditBindingModel,
+    val isLoading: Boolean,
     val canSave: Boolean
 ) {
 
@@ -13,6 +14,7 @@ data class EditUiState(
                 avatar = "",
                 header = ""
             ),
+            isLoading = false,
             canSave = false
         )
     }

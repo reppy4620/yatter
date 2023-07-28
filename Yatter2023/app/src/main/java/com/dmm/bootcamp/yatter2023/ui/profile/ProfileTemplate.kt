@@ -81,78 +81,77 @@ fun ProfileTemplate(
             .pullRefresh(pullRefreshState),
     ) {
         val startSpace = 20
-        Column(modifier = Modifier.fillMaxWidth()) {
-            AsyncImage(
-                model = header,
-                contentDescription = "header",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .size(100.dp),
-                contentScale = ContentScale.Crop
-            )
-            Divider(thickness = 1.dp)
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(15.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+        LazyColumn(modifier = Modifier.fillMaxWidth()) {
+            item {
+
                 AsyncImage(
+                    model = header,
+                    contentDescription = "header",
                     modifier = Modifier
-                        .size(100.dp)
-                        .clip(CircleShape),
-                    model = avatar,
-                    contentDescription = "avatar image",
+                        .fillMaxWidth()
+                        .size(100.dp),
                     contentScale = ContentScale.Crop
                 )
-                OutlinedButton(
-                    onClick = onClickEdit,
-                    colors = ButtonDefaults.buttonColors(
-                        contentColor = Color.Black,
-                        backgroundColor = Color.White,
-                    ),
-                    border = BorderStroke(1.dp, Color.Black),
-                    shape = RoundedCornerShape(30.dp)
+                Divider(thickness = 1.dp)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(15.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.profile_edit),
+                    AsyncImage(
+                        modifier = Modifier
+                            .size(100.dp)
+                            .clip(CircleShape),
+                        model = avatar,
+                        contentDescription = "avatar image",
+                        contentScale = ContentScale.Crop
                     )
+                    OutlinedButton(
+                        onClick = onClickEdit,
+                        colors = ButtonDefaults.buttonColors(
+                            contentColor = Color.Black,
+                            backgroundColor = Color.White,
+                        ),
+                        border = BorderStroke(1.dp, Color.Black),
+                        shape = RoundedCornerShape(30.dp)
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.profile_edit),
+                        )
+                    }
                 }
-            }
-            Text(
-                text = displayName,
-                fontWeight = FontWeight.Bold,
-                fontSize = 25.sp,
-                modifier = Modifier.padding(start = startSpace.dp)
-            )
-            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                Text(text = "@${username}", modifier = Modifier.padding(start = startSpace.dp))
-            }
-            Spacer(modifier = Modifier.padding(vertical = 8.dp))
-            Text(text = note, modifier = Modifier.padding(start = startSpace.dp))
-            Spacer(modifier = Modifier.padding(vertical = 5.dp))
-            Row(modifier = Modifier.padding(start = startSpace.dp)) {
-                Text(text = "$followingCount", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 2.dp))
+                Text(
+                    text = displayName,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 25.sp,
+                    modifier = Modifier.padding(start = startSpace.dp)
+                )
                 CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                    Text(text = "following")
+                    Text(text = "@${username}", modifier = Modifier.padding(start = startSpace.dp))
                 }
-                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-                Text(text = "$followerCount", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 2.dp))
-                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                    Text(text = "followers")
+                Spacer(modifier = Modifier.padding(vertical = 8.dp))
+                Text(text = note, modifier = Modifier.padding(start = startSpace.dp))
+                Spacer(modifier = Modifier.padding(vertical = 5.dp))
+                Row(modifier = Modifier.padding(start = startSpace.dp)) {
+                    Text(text = "$followingCount", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 2.dp))
+                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                        Text(text = "following")
+                    }
+                    Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+                    Text(text = "$followerCount", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 2.dp))
+                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                        Text(text = "followers")
+                    }
                 }
+                Divider(thickness = 1.dp, modifier = Modifier.padding(top = 10.dp))
             }
-            Divider(thickness = 1.dp, modifier = Modifier.padding(top = 10.dp))
-            LazyColumn(
-
-            ) {
-                items(statusList) {
-                    StatusRow(
-                        statusBindingModel = it,
-                        onClick = {}
-                    )
-                    Divider()
-                }
+            items(statusList) {
+                StatusRow(
+                    statusBindingModel = it,
+                    onClick = {}
+                )
+                Divider()
             }
         }
         PullRefreshIndicator(
@@ -237,7 +236,7 @@ private fun ProfileTemplatePreview() {
                         attachmentMediaList = listOf()
                     )
                 ),
-                isLoading = true,
+                isLoading = false,
                 isRefreshing = false,
                 onRefresh = {},
                 onClickEdit = {}

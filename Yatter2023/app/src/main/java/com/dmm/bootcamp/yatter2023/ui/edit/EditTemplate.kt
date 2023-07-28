@@ -1,5 +1,6 @@
 package com.dmm.bootcamp.yatter2023.ui.edit
 
+import android.webkit.URLUtil
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -51,6 +52,8 @@ fun EditTemplate(
     onChangedAvatar: (String) -> Unit,
     onChangedHeader: (String) -> Unit,
 ) {
+    val avatar = if (URLUtil.isValidUrl(avatar)) avatar else stringResource(id = R.string.profile_sample_avatar)
+    val header = if (URLUtil.isValidUrl(header)) header else stringResource(id = R.string.profile_sample_header)
     Scaffold(
         topBar = {
             TopAppBar {
