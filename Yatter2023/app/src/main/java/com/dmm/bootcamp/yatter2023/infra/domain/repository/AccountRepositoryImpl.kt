@@ -1,5 +1,8 @@
 package com.dmm.bootcamp.yatter2023.infra.domain.repository
 
+import android.accounts.AuthenticatorException
+import android.content.Context
+import android.net.Uri
 import com.dmm.bootcamp.yatter2023.auth.TokenProvider
 import com.dmm.bootcamp.yatter2023.domain.model.Account
 import com.dmm.bootcamp.yatter2023.domain.model.Me
@@ -13,6 +16,11 @@ import com.dmm.bootcamp.yatter2023.infra.domain.converter.MeConverter
 import com.dmm.bootcamp.yatter2023.infra.pref.MePreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
 import java.net.URL
 
 class AccountRepositoryImpl(
@@ -50,23 +58,29 @@ class AccountRepositoryImpl(
     me: Me,
     newDisplayName: String?,
     newNote: String?,
-    newAvatar: URL?,
-    newHeader: URL?
+    newAvatar: File?,
+    newHeader: File?
   ): Me {
-    TODO("Not Implemented")
-//    return try {
-//      val token = tokenProvider.provide()
-//      yatterApi.updateCredentials(
-//        token = token,
-//        displayName = newDisplayName?.toRequestBody() ?: me.displayName.toString().toRequestBody(),
-//        note = newNote?.toRequestBody() ?: me.note.toString().toRequestBody(),
-//        avatar =
-//      )
-//      me
-//    } catch (e: AuthenticatorException) {
-//      me
-//    } catch (e: Exception) {
-//      me
-//    }
+//    TODO("Not Implemented")
+    return try {
+      val token = tokenProvider.provide()
+      yatterApi.updateCredentials(
+        token = token,
+        displayName = newDisplayName?.toRequestBody() ?: me.displayName.toString().toRequestBody(),
+        note = newNote?.toRequestBody() ?: me.note.toString().toRequestBody(),
+        avatar = newAvatar?.let { createMultipartBodyPart(it, "avatar") },
+        header = newHeader?.let { createMultipartBodyPart(it, "header") }
+      )
+      me
+    } catch (e: AuthenticatorException) {
+      me
+    } catch (e: Exception) {
+      me
+    }
+  }
+
+  private fun createMultipartBodyPart(imageFile: File, paramName: String): MultipartBody.Part {
+    val requestBody = imageFile.asRequestBody("image/*".toMediaTypeOrNull())
+    return MultipartBody.Part.createFormData(paramName, imageFile.name, requestBody)
   }
 }

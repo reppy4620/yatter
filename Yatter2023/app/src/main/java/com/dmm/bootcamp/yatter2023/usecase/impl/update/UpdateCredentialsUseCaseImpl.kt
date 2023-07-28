@@ -42,8 +42,8 @@ class UpdateCredentialsUseCaseImpl(
                 me = me,
                 newDisplayName = newDisplayName ?: me.displayName,
                 newNote = newNote ?: me.note,
-                newAvatar = if (newAvatar == null) null else URL(newAvatar),
-                newHeader = if (newHeader == null) null else URL(newHeader)
+                newAvatar = null,
+                newHeader = null
             )
             UpdateCredentialsUseCaseResult.Success
         } catch (e: Exception) {
