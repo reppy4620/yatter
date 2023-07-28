@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dmm.bootcamp.yatter2023.domain.repository.StatusRepository
 import com.dmm.bootcamp.yatter2023.domain.service.GetMeService
+import com.dmm.bootcamp.yatter2023.ui.profile.bindingmodel.converter.ProfileConverter
 import com.dmm.bootcamp.yatter2023.ui.timeline.bindingmodel.converter.StatusConverter
 import com.dmm.bootcamp.yatter2023.util.SingleLiveEvent
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,29 +26,25 @@ class ProfileViewModel(
     private val _goBack: SingleLiveEvent<Unit> = SingleLiveEvent()
     val goBack: LiveData<Unit> = _goBack
 
+    private suspend fun fetchHome() {
+        val statusList = statusRepository.findAllHome()
+        _uiState.update {
+            it.copy(
+                statusList = StatusConverter.convertToBindingModel(statusList)
+            )
+        }
+    }
+
     fun onResume() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             val me = getMeService.execute() ?: return@launch
-            val snapShotBindingModel = uiState.value.bindingModel
             _uiState.update {
                 it.copy(
-                    bindingModel = snapShotBindingModel.copy(
-                        username = me.username.value,
-                        displayName = me.displayName ?: "",
-                        note = me.note ?: "",
-                        avatar = me.avatar.toString(),
-                        header = me.header.toString()
-                    )
+                    bindingModel = ProfileConverter.convertToProfile(me)
                 )
             }
-
-            val statusList = statusRepository.findAllHome()
-            _uiState.update {
-                it.copy(
-                    statusList = StatusConverter.convertToBindingModel(statusList)
-                )
-            }
+            fetchHome()
             _uiState.update { it.copy(isLoading = false) }
         }
     }
@@ -55,12 +52,7 @@ class ProfileViewModel(
     fun onRefresh() {
         viewModelScope.launch {
             _uiState.update { it.copy(isRefreshing = true) }
-            val statusList = statusRepository.findAllHome()
-            _uiState.update {
-                it.copy(
-                    statusList = StatusConverter.convertToBindingModel(statusList)
-                )
-            }
+            fetchHome()
             _uiState.update { it.copy(isRefreshing = false) }
         }
     }

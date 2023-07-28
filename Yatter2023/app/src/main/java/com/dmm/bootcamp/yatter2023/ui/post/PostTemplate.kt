@@ -1,6 +1,7 @@
 package com.dmm.bootcamp.yatter2023.ui.post
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
@@ -27,6 +29,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -49,7 +52,7 @@ fun PostTemplate(
     canPost: Boolean,
     onStatusTextChanged: (String) -> Unit,
     onClickPost: () -> Unit,
-    onClickNavIcon: () -> Unit
+    onClickNavIcon: () -> Unit,
 ) {
     val focusRequester = remember { FocusRequester() }
     Scaffold(
@@ -90,21 +93,27 @@ fun PostTemplate(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Row(modifier = Modifier
-                .fillMaxSize()
-                .padding(it)) {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(it)
+            ) {
                 AsyncImage(
-                    modifier = Modifier.size(64.dp),
+                    modifier = Modifier
+                        .padding(start = 5.dp, top = 5.dp)
+                        .size(64.dp)
+                        .clip(CircleShape)
+                        .border(BorderStroke(4.dp, Color.White), CircleShape),
                     model = postBindingModel.avatarUrl,
-                    contentDescription = stringResource(id = R.string.post_avatar_desc),
+                    contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
                 Column(horizontalAlignment = Alignment.End) {
                     TextField(
                         modifier = Modifier
-                            .focusRequester(focusRequester)
                             .fillMaxWidth()
-                            .weight(1f),
+                            .weight(1f)
+                            .focusRequester(focusRequester),
                         value = postBindingModel.statusText,
                         onValueChange = onStatusTextChanged,
                         colors = TextFieldDefaults.textFieldColors(

@@ -90,7 +90,8 @@ fun EditTemplate(
             TopAppBar {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     TextButton(
                         onClick = onClickCancel,
@@ -104,8 +105,7 @@ fun EditTemplate(
                         text = stringResource(id = R.string.edit_title),
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(top = 8.dp),
-                        fontSize = 25.sp
+                        fontSize = 20.sp
                     )
                     TextButton(
                         onClick = onClickSave,
@@ -127,30 +127,34 @@ fun EditTemplate(
         ) {
             Spacer(modifier = Modifier.height(5.dp))
             Column {
-                AsyncImage(
-                    model = header,
-                    contentDescription = "header",
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .size(100.dp)
-                        .clickable {
-                            headerLauncher.launch(
-                                PickVisualMediaRequest(
-                                    mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
+                        .height(150.dp),
+                ) {
+                    AsyncImage(
+                        model = header,
+                        contentDescription = "header",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .size(100.dp)
+                            .clickable {
+                                headerLauncher.launch(
+                                    PickVisualMediaRequest(
+                                        mediaType = ActivityResultContracts.PickVisualMedia.ImageOnly
+                                    )
                                 )
-                            )
-                        },
-                    contentScale = ContentScale.Crop
-                )
-                Divider(thickness = 1.dp)
-                Spacer(modifier = Modifier.height(5.dp))
-                Column(modifier = Modifier.padding(horizontal = 10.dp)) {
+                            },
+                        contentScale = ContentScale.Crop
+                    )
                     AsyncImage(
                         model = avatar,
                         modifier = Modifier
+                            .padding(start = 15.dp)
                             .size(100.dp)
                             .clip(CircleShape)
-                            .border(BorderStroke(1.dp, Color.Gray), CircleShape)
+                            .border(BorderStroke(4.dp, Color.White), CircleShape)
+                            .align(Alignment.BottomStart)
                             .clickable {
                                 avatarLauncher.launch(
                                     PickVisualMediaRequest(
@@ -161,7 +165,9 @@ fun EditTemplate(
                         contentDescription = "avatar image",
                         contentScale = ContentScale.Crop
                     )
-                    Divider(thickness = 1.dp, modifier = Modifier.padding(vertical = 8.dp))
+                }
+                Divider(thickness = 1.dp, modifier = Modifier.padding(8.dp))
+                Column(modifier = Modifier.padding(horizontal = 10.dp)) {
                     OutlinedTextField(
                         value = displayName,
                         singleLine = true,

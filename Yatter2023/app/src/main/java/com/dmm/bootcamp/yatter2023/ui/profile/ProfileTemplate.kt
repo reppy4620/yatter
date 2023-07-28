@@ -1,15 +1,10 @@
 package com.dmm.bootcamp.yatter2023.ui.profile
 
-import android.webkit.URLUtil
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,7 +17,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
@@ -31,8 +25,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Surface
-import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -41,10 +33,6 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -86,86 +74,21 @@ fun ProfileTemplate(
             .fillMaxSize()
             .pullRefresh(pullRefreshState),
     ) {
-        val startSpace = 20
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             item {
-                Box(modifier = Modifier.fillMaxWidth().height(100.dp)) {
-                    AsyncImage(
-                        model = header,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .size(100.dp),
-                        contentScale = ContentScale.Crop
-                    )
-                    IconButton(
-                        onClick = onClickBack,
-                        modifier = Modifier
-                            .padding(start = 15.dp, top = 10.dp)
-                            .clip(CircleShape)
-                            .background(color = Color.Black.copy(alpha = 0.5f))
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = null,
-                            tint = Color.White
-                        )
-                    }
-                }
-                Divider(thickness = 1.dp)
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(15.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    AsyncImage(
-                        modifier = Modifier
-                            .size(100.dp)
-                            .clip(CircleShape)
-                            .border(BorderStroke(1.dp, Color.Gray), CircleShape),
-                        model = avatar,
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop
-                    )
-                    OutlinedButton(
-                        onClick = onClickEdit,
-                        colors = ButtonDefaults.buttonColors(
-                            contentColor = Color.Black,
-                            backgroundColor = Color.White,
-                        ),
-                        border = BorderStroke(1.dp, Color.Black),
-                        shape = RoundedCornerShape(30.dp)
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.profile_edit),
-                        )
-                    }
-                }
-                Text(
-                    text = displayName,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 25.sp,
-                    modifier = Modifier.padding(start = startSpace.dp)
+                Header(
+                    header = header,
+                    avatar = avatar,
+                    onClickBack = onClickBack,
+                    onClickEdit = onClickEdit
                 )
-                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                    Text(text = "@${username}", modifier = Modifier.padding(start = startSpace.dp))
-                }
-                Spacer(modifier = Modifier.padding(vertical = 8.dp))
-                Text(text = note, modifier = Modifier.padding(start = startSpace.dp))
-                Spacer(modifier = Modifier.padding(vertical = 5.dp))
-                Row(modifier = Modifier.padding(start = startSpace.dp)) {
-                    Text(text = "$followingCount", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 2.dp))
-                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                        Text(text = "following")
-                    }
-                    Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-                    Text(text = "$followerCount", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 2.dp))
-                    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                        Text(text = "followers")
-                    }
-                }
-                Divider(thickness = 1.dp, modifier = Modifier.padding(top = 10.dp))
+                TextBody(
+                    username = username,
+                    displayName = displayName,
+                    note = note,
+                    followingCount = followingCount,
+                    followerCount = followerCount
+                )
             }
             items(statusList) {
                 StatusRow(
@@ -184,6 +107,109 @@ fun ProfileTemplate(
             FullScreenLoadingIndicator()
         }
     }
+}
+
+@Composable
+fun Header(
+    header: String?,
+    avatar: String?,
+    onClickBack: () -> Unit,
+    onClickEdit: () -> Unit
+) {
+
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .height(180.dp)) {
+        AsyncImage(
+            model = header,
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(130.dp),
+            contentScale = ContentScale.Crop
+        )
+        IconButton(
+            onClick = onClickBack,
+            modifier = Modifier
+                .padding(start = 15.dp, top = 20.dp)
+                .clip(CircleShape)
+                .background(color = Color.Black.copy(alpha = 0.5f))
+        ) {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = null,
+                tint = Color.White
+            )
+        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.BottomStart),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            AsyncImage(
+                modifier = Modifier
+                    .padding(start = 15.dp)
+                    .size(100.dp)
+                    .clip(CircleShape)
+                    .border(BorderStroke(4.dp, Color.White), CircleShape),
+                model = avatar,
+                contentDescription = null,
+                contentScale = ContentScale.Crop
+            )
+            OutlinedButton(
+                modifier = Modifier
+                    .padding(top = 55.dp, end = 15.dp),
+                onClick = onClickEdit,
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = Color.Black,
+                    backgroundColor = Color.White,
+                ),
+                border = BorderStroke(1.dp, Color.Black),
+                shape = RoundedCornerShape(30.dp),
+            ) {
+                Text(
+                    text = stringResource(id = R.string.profile_edit),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun TextBody(
+    username: String,
+    displayName: String,
+    note: String,
+    followingCount: Int,
+    followerCount: Int,
+) {
+    val startSpace = 20
+    Text(
+        text = displayName,
+        fontWeight = FontWeight.Bold,
+        fontSize = 25.sp,
+        modifier = Modifier.padding(start = startSpace.dp)
+    )
+    CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+        Text(text = "@${username}", modifier = Modifier.padding(start = startSpace.dp))
+    }
+    Spacer(modifier = Modifier.padding(vertical = 8.dp))
+    Text(text = note, modifier = Modifier.padding(start = startSpace.dp))
+    Spacer(modifier = Modifier.padding(vertical = 5.dp))
+    Row(modifier = Modifier.padding(start = startSpace.dp)) {
+        Text(text = "$followingCount", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 2.dp))
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+            Text(text = "following")
+        }
+        Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+        Text(text = "$followerCount", fontWeight = FontWeight.Bold, modifier = Modifier.padding(end = 2.dp))
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+            Text(text = "followers")
+        }
+    }
+    Divider(thickness = 1.dp, modifier = Modifier.padding(top = 10.dp))
 }
 
 @Preview

@@ -29,6 +29,7 @@ class PostActivity: AppCompatActivity() {
                 }
             }
         }
+        viewModel.onCreate()
         viewModel.goBack.observe(this) {
             finish()
         }

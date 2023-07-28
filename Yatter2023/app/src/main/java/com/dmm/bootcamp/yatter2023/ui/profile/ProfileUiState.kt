@@ -1,5 +1,6 @@
 package com.dmm.bootcamp.yatter2023.ui.profile
 
+import com.dmm.bootcamp.yatter2023.ui.profile.bindingmodel.ProfileBindingModel
 import com.dmm.bootcamp.yatter2023.ui.timeline.bindingmodel.StatusBindingModel
 
 data class ProfileUiState(
